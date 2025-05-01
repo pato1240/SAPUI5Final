@@ -1,0 +1,22 @@
+{
+    "TileCollectionEmpleados": [
+        {
+            "Title": "Crear empleado",
+            "Icon": "sap-icon://add-employee",
+            "View": "RouteCrearEmpleado"
+        },
+        {
+            "Title": "Ver empleados",
+            "Icon": "sap-icon://employee-lookup",
+            "View": "RouteVerEmpleados"
+        }
+    ],
+
+    "TileCollectionPedidos": [
+        {
+            "Title": "Firmar pedido",
+            "Icon": "sap-icon://signature",
+            "View": "ViewList"
+        }
+    ]
+}

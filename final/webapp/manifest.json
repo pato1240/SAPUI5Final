@@ -1,0 +1,130 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "com.logali.final",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.17.3",
+      "toolsId": "c159797e-d2ea-446c-80b3-699a3e418f30"
+    },
+    "dataSources": {
+      "tiles": {
+        "uri": "model/Tiles.json",
+        "type": "JSON"
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.135.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.logali.final.i18n.i18n"
+        }
+      },
+      "tilesCollection": {
+        "type": "sap.ui.model.json.JSONModel",
+        "dataSource": "tiles"
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "com.logali.final.view",
+        "async": true,
+        "viewPath": "com.logali.final.view"
+      },
+      "routes": [
+        {
+          "name": "RouteMain",
+          "pattern": ":?query:",
+          "target": [
+            "TargetMain"
+          ]
+        },
+        {
+          "name": "RouteCrearEmpleado",
+          "pattern": "CrearEmpleado",
+          "target": [
+            "TargetCrearEmpleado"
+          ]
+        },
+        {
+          "name": "RouteVerEmpleados",
+          "pattern": "VerEmpleados",
+          "target": [
+            "TargetVerEmpleados"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetMain": {
+          "id": "Main",
+          "name": "Main"
+        },
+        "TargetCrearEmpleado": {
+          "id": "CrearEmpleado",
+          "name": "CrearEmpleado"
+        },
+          "TargetVerEmpleados": {
+            "id": "VerEmpleados",
+            "name": "VerEmpleados"
+          }
+      }
+    },
+    "rootView": {
+      "viewName": "com.logali.final.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}

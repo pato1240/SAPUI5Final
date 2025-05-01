@@ -1,0 +1,74 @@
+<mvc:View controllerName="com.logali.final.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.f"
+    xmlns="sap.m">
+
+    <Page id="page" title="{i18n>title}">
+
+        <content>
+
+            <ScrollContainer width="100%" height="100%" vertical="true">
+
+                <Panel headerText="{i18n>employeesHeader}"
+                       class="sapUiMediumMargin" 
+                       width="auto" 
+                       expandable="true" 
+                       expanded="true">
+
+                    <f:GridContainer class="sapUiSmallMargin" 
+                                     items="{tilesCollection>/TileCollectionEmpleados}">
+
+                        <f:layout>
+                            <f:GridContainerSettings rowSize="5rem" columnSize="5rem" gap="1rem" />
+                        </f:layout>
+
+                        <f:layoutS>
+                            <f:GridContainerSettings rowSize="4rem" columnSize="4rem" gap="0.5rem" />
+                        </f:layoutS>
+
+                        <f:items>
+                            <GenericTile header="{tilesCollection>Title}" 
+                                         headerImage="{tilesCollection>Icon}"
+                                         press="onPressTile">
+                            	<layoutData>
+				                    <f:GridContainerItemLayoutData rows="2" columns="2" />
+			                    </layoutData>
+                            </GenericTile>
+                        </f:items>
+                    </f:GridContainer>
+
+                </Panel>
+
+                <Panel headerText="{i18n>ordersHeader}" class="sapUiMediumMargin" width="auto" expandable="true" expanded="true">
+
+                    <f:GridContainer class="sapUiSmallMargin" 
+                                     items="{tilesCollection>/TileCollectionPedidos}">
+
+                        <f:layout>
+                            <f:GridContainerSettings rowSize="5rem" columnSize="5rem" gap="1rem" />
+                        </f:layout>
+
+                        <f:layoutS>
+                            <f:GridContainerSettings rowSize="4rem" columnSize="4rem" gap="0.5rem" />
+                        </f:layoutS>
+
+                        <f:items>
+                            <GenericTile header="{tilesCollection>Title}"
+                                         headerImage="{tilesCollection>Icon}"
+                                         press="onPressTile">
+                            	<layoutData>
+				                    <f:GridContainerItemLayoutData rows="2" columns="2" />
+			                    </layoutData>
+                            </GenericTile>
+                        </f:items>
+                    </f:GridContainer>
+
+                </Panel>
+
+            </ScrollContainer>
+
+        </content>
+
+    </Page>
+
+</mvc:View>
