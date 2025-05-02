@@ -22,5 +22,8 @@ export default class Component extends BaseComponent {
 
         // enable routing
         this.getRouter().initialize();
+
+        //set application language 
+        sap.ui.getCore().getConfiguration().setLanguage("es");
 	}
 }

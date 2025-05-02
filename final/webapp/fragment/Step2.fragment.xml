@@ -1,0 +1,68 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+
+     <MessageStrip
+        text="{i18n>informationMessageStep2}"
+        type="Information"
+        showIcon="true"
+        class="sapUiMediumMarginBottom">
+    </MessageStrip>
+
+    <VBox class="sapUiSmallMargin">
+
+        <form:SimpleForm id="SimpleFormStep2"
+        editable="true"
+        layout="ResponsiveGridLayout"
+        labelSpanXL="3"
+        labelSpanL="3"
+        labelSpanM="3"
+        labelSpanS="12"
+        adjustLabelSpan="false"
+        columnsXL="1"
+        columnsL="1"
+        columnsM="1"
+        singleContainerFullSize="false" >
+
+            <form:content>
+        
+                <Label text="{i18n>name}"
+                        required="true"/>
+                <Input />
+
+                <Label text="{i18n>lastName}"
+                        required="true"/>
+                <Input/>
+
+                <Label text="{i18n>dni}"
+                        required="true"/>
+                <Input/>
+
+                <Label text="{i18n>cif}"
+                        required="true"/>
+                <Input/>
+
+                <Label text="{i18n>anualSalary}"/>
+                <Slider enableTickmarks="true"
+                        min="12,000"
+                        max="80,000"
+                        value="24,000"/> 
+
+                <Label text="{i18n>dailyPrice}"/>
+                <Slider enableTickmarks="true"
+                        min="100"
+                        max="2000"
+                        value="400"/>       
+                
+                <Label text="{i18n>joiningDate}"
+                    required="true"/>
+                <DatePicker placeholder="{i18n>datePlaceHolder}"
+                            change="dateChange"/>
+            </form:content>
+
+        </form:SimpleForm>  
+
+    </VBox>
+
+</core:FragmentDefinition>

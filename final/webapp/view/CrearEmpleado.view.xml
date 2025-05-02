@@ -1,6 +1,7 @@
 <mvc:View controllerName="com.logali.final.controller.CrearEmpleado"
+    xmlns:l="sap.ui.layout"
+    xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns:upload="sap.m.upload"
     xmlns="sap.m">
 
     <NavContainer id="wizzardNavContainer">
@@ -15,143 +16,31 @@
 
                     <Wizard id="createEmployeeWizard">
 
-                        <WizardStep id="EmployeeTypeStep"
+                        <WizardStep id="EmployeeTypeStep1"
                                     title="{i18n>employeeTypeTitle}">
 
-                            <MessageStrip
-                                text="{i18n>informationMessageStep1}"
-                                type="Information"
-                                showIcon="true"
-                                class="sapUiMediumMarginBottom">
-                            </MessageStrip>
+                            <core:Fragment id="step1Fragment"
+                                           fragmentName="com.logali.final.fragment.Step1"
+                                           type="XML"/>
 
-                            <HBox alignItems="Center"
-                                  justifyContent="Center"
-                                  width="100%">
-                                <Button id="buttonInternal" 
-                                        text="{i18n>internal}" 
-                                        class="sapUiSmallMargin"
-                                        press="onPressInternal"/>
-                                <Button id="buttonSelf-employed" 
-                                        text="{i18n>self-employed}" 
-                                        class="sapUiSmallMargin"
-                                        press="onPressSelfEmployed"/>
-                                <Button id="buttonManager" 
-                                        text="{i18n>manager}" 
-                                        class="sapUiSmallMargin"
-                                        press="onPressManager"/>
-							</HBox>
                         </WizardStep>
 
-                        <WizardStep id="EmployeeDataStep"
+                        <WizardStep id="EmployeeDataStep2"
                                     title="{i18n>employeeDataTitle}">
 
-                            <MessageStrip
-                                text="{i18n>informationMessageStep2}"
-                                type="Information"
-                                showIcon="true"
-                                class="sapUiMediumMarginBottom">
-                            </MessageStrip>
-
-                            <VBox alignItems="Center"
-                                  justifyContent="Center"
-                                  width="100%">
-
-                                <HBox alignItems="Center"
-                                      justifyContent="Center"
-                                      width="auto"> 
-                                    <Label text="{i18n>name}"
-                                           required="true"
-                                           class="sapUiSmallMarginEnd"/>
-                                    <Input/>
-                                </HBox>   
-
-                                <HBox alignItems="Center"
-                                      justifyContent="Center"
-                                      width="auto"> 
-                                    <Label text="{i18n>lastName}"
-                                       required="true"
-                                       class="sapUiSmallMarginEnd"/>
-                                    <Input/>
-                                </HBox>  
-
-                                <HBox alignItems="Center"
-                                      justifyContent="Center"
-                                      width="auto"> 
-                                    <Label text="{i18n>dni}"
-                                       required="true"
-                                       class="sapUiSmallMarginEnd"/>
-                                    <Input/>  
-                                </HBox>  
-
-                                <HBox alignItems="Center"
-                                      justifyContent="Center"
-                                      width="auto"> 
-                                    <Label text="{i18n>cif}"
-                                       required="true"
-                                       class="sapUiSmallMarginEnd"/>
-                                    <Input/>  
-                                </HBox> 
-
-                                <HBox alignItems="Center"
-                                      justifyContent="Center"
-                                      width="auto"> 
-                                    <Label text="{i18n>anualSalary}"
-                                       class="sapUiSmallMarginEnd"/>
-                                    <Slider enableTickmarks="true"
-                                            min="12,000"
-                                            max="80,000"
-                                            value="24,000"
-                                            class="sapUiMediumMarginBottom"/> 
-                                </HBox> 
-
-                                <HBox alignItems="Center"
-                                      justifyContent="Center"
-                                      width="auto"> 
-                                    <Label text="{i18n>dailyPrice}"
-                                       class="sapUiSmallMarginEnd"/>
-                                    <Slider enableTickmarks="true"
-                                            min="100"
-                                            max="2000"
-                                            value="400"
-                                            class="sapUiMediumMarginBottom"/> 
-                                </HBox> 
-
-                                <HBox alignItems="Center"
-                                      justifyContent="Center"
-                                      width="auto"> 
-                                    <Label text="{i18n>joiningDate}"
-                                           required="true"
-                                           class="sapUiSmallMarginEnd"/>
-                                    <DatePicker placeholder="{i18n>datePlaceHolder}"
-                                                change="dateChange"/>
-                                </HBox> 
-                                
-                            </VBox>
+                            <core:Fragment id="step2Fragment"
+                                           fragmentName="com.logali.final.fragment.Step2"
+                                           type="XML"/>
 
                         </WizardStep>
 
-                        <WizardStep id="AdditionalInfoStep"
+                        <WizardStep id="AdditionalInfoStep3"
                                     title="{i18n>additionalInfoTitle}">
+                                
+                            <core:Fragment id="step3Fragment"
+                                           fragmentName="com.logali.final.fragment.Step3"
+                                           type="XML"/>
 
-                            <MessageStrip
-                                text="{i18n>informationMessageStep3}"
-                                type="Information"
-                                showIcon="true"
-                                class="sapUiMediumMarginBottom">
-                            </MessageStrip>
-
-                            <VBox justifyContent="Start">
-                                <Label text="{i18n>comment}"/>
-                                <TextArea growing="true"
-                                            height="100px"/>
-                                <upload:UploadSet id="UploadSet"
-                                                    />
-                            </VBox>
-
-
-
-                            
                         </WizardStep>
 
                     </Wizard>
@@ -166,7 +55,6 @@
 				</footer>
 
             </Page>
-
 
         </pages>
 
