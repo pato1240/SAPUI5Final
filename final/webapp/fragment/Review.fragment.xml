@@ -1,0 +1,87 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+
+    <Panel id="reviewStep1">
+
+        <form:SimpleForm title="1. {i18n>employeeTypeTitle} "
+                        editable="false"
+                        layout="ResponsiveGridLayout">
+            <form:content>
+                <Label text="{i18n>type}"/>
+                <Text core:require="{
+                                Formatter: 'com/logali/final/model/formatter'
+                            }"
+                      text="{
+                            path:'form>/Type',
+                            formatter: 'Formatter.employeeTypeText.bind($controller)'
+                            }"/>
+
+                <Link press="onEditStepOne" text="{i18n>edit}" />
+            </form:content>
+
+        </form:SimpleForm>
+
+    </Panel>
+
+    <Panel id="reviewStep2">
+
+        <form:SimpleForm title="2. {i18n>employeeDataTitle} "
+                        editable="false"
+                        layout="ResponsiveGridLayout">
+            <form:content>
+                <Label text="{i18n>name}"/>
+                <Text  text="{form>/Name}"/>
+
+                <Label text="{i18n>lastName}"/>
+                <Text  text="{form>/LastName}"/>
+
+                <Label text="{=
+                            ${form>/Type} !== '1' ? 'DNI' : 'CIF'
+                            }"/>
+                <Text  text="{form>/Dni}"/>
+
+                <Label text="{=
+                            ${form>/Type} !== '1' ? 'Saldo bruto anual' : 'Precio diario'
+                            }"/>
+                <Text  text="{form>/SliderValue}"/>
+
+                <Label text="{i18n>joiningDate}"/>
+                <Text text="{
+				        path: 'form>/Date',
+				        type: 'sap.ui.model.type.Date',
+				        formatOptions: {
+				          pattern: 'dd MMM. yyyy'
+				        }
+				      }" />
+
+                <Link press="onEditStepTwo" text="{i18n>edit}" />
+            </form:content>
+
+        </form:SimpleForm>
+
+    </Panel>
+
+    <Panel id="reviewStep3">
+
+        <form:SimpleForm title="3. {i18n>additionalInfoTitle} "
+                        editable="false"
+                        layout="ResponsiveGridLayout">
+            <form:content>
+
+                <Label text="{i18n>comment}"/>
+                <Text  text="{form>/Comment}"/>
+
+                <Label text="{i18n>documents}"/>
+                <Text  text="{}"/>
+
+                <Link press="onEditStepThree" text="{i18n>edit}" />
+                
+            </form:content>
+
+        </form:SimpleForm>
+
+    </Panel>
+
+</core:FragmentDefinition>

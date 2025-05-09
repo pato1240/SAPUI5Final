@@ -14,15 +14,17 @@
 
         <Button id="buttonInternal" 
                 text="{i18n>internal}" 
-                press="onPressInternal"/>
-        <Button id="buttonSelf-employed" 
-                text="{i18n>self-employed}" 
+                press="onGoToStep2"
+                enabled="{= ${form>/Enable} }"/>
+        <Button id="buttonSelfEmployed" 
+                text="{i18n>selfEmployed}" 
                 class="sapUiTinyMarginBeginEnd"
-                press="onPressSelfEmployed"/>
+                press="onGoToStep2"
+                enabled="{= ${form>/Enable} }"/>
         <Button id="buttonManager" 
                 text="{i18n>manager}" 
-                press="onPressManager"/>
-                
+                press="onGoToStep2"
+                enabled="{= ${form>/Enable} }"/>
     </HBox>
 
 </core:FragmentDefinition>

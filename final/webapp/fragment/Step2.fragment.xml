@@ -10,9 +10,9 @@
         class="sapUiMediumMarginBottom">
     </MessageStrip>
 
-    <VBox class="sapUiSmallMargin">
+    <VBox class="sapUiSmallMargin" id="test1">
 
-        <form:SimpleForm id="SimpleFormStep2"
+        <form:SimpleForm id="simpleFormStep2"
         editable="true"
         layout="ResponsiveGridLayout"
         labelSpanXL="3"
@@ -26,39 +26,48 @@
         singleContainerFullSize="false" >
 
             <form:content>
-        
+            
                 <Label text="{i18n>name}"
                         required="true"/>
-                <Input />
+                <Input id="name" 
+                       value="{form>/Name}"
+                       valueState="{form>/NameValueState}"
+                       liveChange="onValidateStep2"/>
 
                 <Label text="{i18n>lastName}"
                         required="true"/>
-                <Input/>
+                <Input id="lastName"
+                       value="{form>/LastName}"
+                       valueState="{form>/LastNameValueState}"
+                       liveChange="onValidateStep2" />
 
-                <Label text="{i18n>dni}"
+                <Label text="{=
+                            ${form>/Type} !== '1' ? 'DNI' : 'CIF'
+                            }"
                         required="true"/>
-                <Input/>
+                <Input id="dni"
+                        
+                        value="{form>/Dni}"
+                        valueState="{form>/DniValueState}"
+                        liveChange="onValidateStep2"/>
 
-                <Label text="{i18n>cif}"
-                        required="true"/>
-                <Input/>
-
-                <Label text="{i18n>anualSalary}"/>
+                <Label text="{=
+                        ${form>/Type} !== '1' ? 'Saldo bruto anual' : 'Precio diario'
+                        }"/>
                 <Slider enableTickmarks="true"
-                        min="12,000"
-                        max="80,000"
-                        value="24,000"/> 
+                        min="{form>/SliderMin}"
+                        max="{form>/SliderMax}"
+                        value="{form>/SliderValue}"
+                        showAdvancedTooltip="true"
+                        class="sapUiMediumMarginBottom"/> 
 
-                <Label text="{i18n>dailyPrice}"/>
-                <Slider enableTickmarks="true"
-                        min="100"
-                        max="2000"
-                        value="400"/>       
-                
                 <Label text="{i18n>joiningDate}"
-                    required="true"/>
-                <DatePicker placeholder="{i18n>datePlaceHolder}"
-                            change="dateChange"/>
+                       required="true"/>
+                <DatePicker id="date"
+                            placeholder="{i18n>datePlaceHolder}"
+                            dateValue="{form>/Date}"
+                            valueState="{form>/DateValueState}"
+                            change="onValidateStep2"/>
             </form:content>
 
         </form:SimpleForm>  

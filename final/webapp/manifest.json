@@ -19,6 +19,15 @@
       "tiles": {
         "uri": "model/Tiles.json",
         "type": "JSON"
+      },
+      "mainService": {
+        "uri": "/sap/opu/odata/sap/ZEMPLOYEES_SRV/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
       }
     }
   },
@@ -61,6 +70,11 @@
       "tilesCollection": {
         "type": "sap.ui.model.json.JSONModel",
         "dataSource": "tiles"
+      },
+      "zemployees": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
       }
     },
     "resources": {
@@ -91,17 +105,24 @@
           ]
         },
         {
-          "name": "RouteCrearEmpleado",
-          "pattern": "CrearEmpleado",
+          "name": "RouteCreateEmployee",
+          "pattern": "CreateEmployee",
           "target": [
-            "TargetCrearEmpleado"
+            "TargetCreateEmployee"
           ]
         },
         {
-          "name": "RouteVerEmpleados",
-          "pattern": "VerEmpleados",
+          "name": "RouteReview",
+          "pattern": "Review",
           "target": [
-            "TargetVerEmpleados"
+            "TargetReview"
+          ]
+        },
+        {
+          "name": "RouteViewEmployees",
+          "pattern": "ViewEmployees",
+          "target": [
+            "TargetViewEmployees"
           ]
         }
       ],
@@ -110,14 +131,18 @@
           "id": "Main",
           "name": "Main"
         },
-        "TargetCrearEmpleado": {
-          "id": "CrearEmpleado",
-          "name": "CrearEmpleado"
+        "TargetCreateEmployee": {
+          "id": "CreateEmployee",
+          "name": "CreateEmployee"
         },
-          "TargetVerEmpleados": {
-            "id": "VerEmpleados",
-            "name": "VerEmpleados"
-          }
+        "TargetReview": {
+          "id": "Review",
+          "name": "Review"
+        },
+        "TargetViewEmployees": {
+          "id": "ViewEmployees",
+          "name": "ViewEmployees"
+        }
       }
     },
     "rootView": {
