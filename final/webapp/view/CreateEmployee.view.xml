@@ -52,7 +52,9 @@
                 <footer>
                     <OverflowToolbar>
                         <ToolbarSpacer/>
-                        <Button text="{i18n>cancelButton}" press="handleWizardCancel"/>
+                        <Button text="{i18n>cancelButton}"
+                                press="handleWizardCancel"
+                                type="Reject"/>
                     </OverflowToolbar>
 				</footer>
 
@@ -82,8 +84,12 @@
                 <footer>
                     	<Bar>
 							<contentRight>
-								<Button text="{i18n>cancelButton}" press="handleWizardCancel"/>
-								<Button text="{i18n>saveButton}" press="handleWizardSave"/>
+								<Button text="{i18n>cancelButton}" 
+                                        press="handleWizardCancel"
+                                        type="Reject"/>
+								<Button text="{i18n>saveButton}" 
+                                        press="handleWizardSave"
+                                        type="Accept"/>
 							</contentRight>
 						</Bar>
 				</footer>

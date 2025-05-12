@@ -83,6 +83,24 @@ export default class Utils {
     
     }
 
+    public async read(object?: JSONModel) : Promise<void | ODataListBinding> {
+        const model = this.model;
+        const url = object?.getProperty("/url");
+        const filters = object?.getProperty("/filters");
+
+        return new Promise((resolve, reject)=>{
+            model.read(url, {
+                filters: filters,
+                success: function(data: ODataListBinding) {
+                    resolve(data);
+                },
+                error: function() {
+                    reject();
+                }
+            });
+        });
+    }
+
 
 
     

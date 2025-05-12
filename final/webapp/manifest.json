@@ -112,17 +112,18 @@
           ]
         },
         {
-          "name": "RouteReview",
-          "pattern": "Review",
-          "target": [
-            "TargetReview"
-          ]
-        },
-        {
           "name": "RouteViewEmployees",
           "pattern": "ViewEmployees",
           "target": [
             "TargetViewEmployees"
+          ]
+        },
+        {
+          "name": "RouteDetails",
+          "pattern": "Employee({index})",
+          "target": [
+            "TargetViewEmployees",
+            "TargetDetail"
           ]
         }
       ],
@@ -135,13 +136,22 @@
           "id": "CreateEmployee",
           "name": "CreateEmployee"
         },
-        "TargetReview": {
-          "id": "Review",
-          "name": "Review"
+        "TargetContainer": {
+          "id": "Container",
+          "name": "Container"
         },
         "TargetViewEmployees": {
           "id": "ViewEmployees",
+          "parent": "TargetContainer",
+          "controlId": "container",
+          "controlAggregation": "beginColumnPages",
           "name": "ViewEmployees"
+        },
+        "TargetDetail": {
+          "parent": "TargetContainer",
+          "controlId": "container",
+          "controlAggregation": "midColumnPages",
+          "name": "Details"
         }
       }
     },

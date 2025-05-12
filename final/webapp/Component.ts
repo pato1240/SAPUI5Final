@@ -25,5 +25,7 @@ export default class Component extends BaseComponent {
 
         //set application language 
         sap.ui.getCore().getConfiguration().setLanguage("es");
+
 	}
+
 }

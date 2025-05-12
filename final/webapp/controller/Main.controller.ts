@@ -2,6 +2,7 @@ import JSONModel from "sap/ui/model/json/JSONModel";
 import BaseController from "./BaseController";
 import { GenericTile$PressEvent } from "sap/m/GenericTile";
 import Context from "sap/ui/model/Context";
+import { layout } from "sap/ui/commons/library";
 
 /**
  * @namespace com.logali.final.controller
@@ -11,7 +12,6 @@ export default class Main extends BaseController {
     /*eslint-disable @typescript-eslint/no-empty-function*/
     public onInit(): void {
         this.loadTiles();
-
     }
 
     private loadTiles(): void {

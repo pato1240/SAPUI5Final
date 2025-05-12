@@ -1,0 +1,98 @@
+<mvc:View controllerName="com.logali.final.controller.Details"
+    xmlns="sap.m"
+    xmlns:uxap="sap.uxap"
+	xmlns:mvc="sap.ui.core.mvc"
+    xmlns:commons="sap.suite.ui.commons">
+
+    <NavContainer id="detailsNavContainer">
+
+        <Page id="entrancePage"
+               showHeader="false">
+
+            <VBox height="100%"
+                  alignItems="Center"
+                  justifyContent="Center">
+
+                  <Text text="{i18n>selectEmployee}"/>
+            
+            </VBox>
+        
+        </Page>
+
+        <Page id="detailsPage"
+              showHeader="false">
+
+            <uxap:ObjectPageLayout>
+
+                <uxap:headerTitle>
+
+                    <uxap:ObjectPageDynamicHeaderTitle>
+                        
+                        <uxap:expandedHeading>
+                        <Title text="{employees>FirstName}-{employees>LastName}"
+                            wrapping="true"/>
+                        </uxap:expandedHeading>
+
+                        <uxap:expandedContent>
+                            <Text text="Hola a todos"/>
+                            <Text text="{employees>LastName}"/>
+                        </uxap:expandedContent>
+                    
+                    </uxap:ObjectPageDynamicHeaderTitle>
+                
+                </uxap:headerTitle>
+
+                <uxap:sections>
+                    
+                    <uxap:ObjectPageSection showTitle="false">
+                        <uxap:subSections>
+                            <uxap:ObjectPageSubSection>
+                                <uxap:blocks>
+                                    <IconTabBar>
+                                        <items>
+                                            <IconTabFilter icon="sap-icon://attachment"
+                                                           text="{i18n>files}">
+                                                <Text text="Attachments go here ..." />
+                                            </IconTabFilter>
+
+                                            <IconTabFilter icon="sap-icon://monitor-payments"
+                                                           text="{i18n>record}">
+                                                <commons:Timeline >
+                                                    <commons:content>
+                                                        <commons:TimelineItem >
+                                                        
+                                                        </commons:TimelineItem>
+                                                    </commons:content>
+                                                </commons:Timeline>
+                                            </IconTabFilter>
+                                        </items>
+                                    </IconTabBar>
+                                </uxap:blocks>
+                            </uxap:ObjectPageSubSection>
+                        </uxap:subSections>
+                    </uxap:ObjectPageSection>
+                
+                </uxap:sections>
+            
+            </uxap:ObjectPageLayout>
+
+            <footer>
+                <Bar>
+                    <contentRight>
+                        <Button text="{i18n>terminateEmployeeButton}" 
+                                press="onDeleteEmployee"
+                                type="Reject"/>
+                        <Button text="{i18n>promoteEmployeeButton}" 
+                                press="onPromoteEmployee"
+                                type="Accept"/>
+                    </contentRight>
+                </Bar>
+            </footer>
+        
+        </Page>
+
+    </NavContainer>
+
+    
+
+</mvc:View>

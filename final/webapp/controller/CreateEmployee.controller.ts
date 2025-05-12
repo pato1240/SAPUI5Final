@@ -22,13 +22,13 @@ export default class CreateEmployee extends BaseController {
     /*eslint-disable @typescript-eslint/no-empty-function*/
           
     public onInit(): void {
-        this.form();
+        // this.form();
     }
 
-    private form() : void {
-        const model = new JSONModel({});
-        this.setModel(model, "form");
-    }
+    // private form() : void {
+    //     const model = new JSONModel([]);
+    //     this.setModel(model, "form");
+    // }
 
     public handleWizardCancel(): void {
         const wizard = this.byId("createEmployeeWizard") as Wizard;
@@ -52,7 +52,6 @@ export default class CreateEmployee extends BaseController {
         wizard.setCurrentStep(this.byId("EmployeeDataStep2") as WizardStep);
 
         const buttonEmployeeSelected = event.getSource() as Button;
-
         const buttonId = (buttonEmployeeSelected.getId() as String).slice(78);
         const formModel = this.getModel("form") as JSONModel;
 
@@ -78,10 +77,6 @@ export default class CreateEmployee extends BaseController {
                 formModel.setProperty("/SliderValue", 70000);
             break;
         }
-
-        console.log((formModel.getData as any).Dni);
-
-
     }
 
     public onValidateStep2() : void {
@@ -222,6 +217,7 @@ export default class CreateEmployee extends BaseController {
             }
         }
         console.log(object);
+        //await utils.crud('create', new JSONModel(object));
     }
 
 }
