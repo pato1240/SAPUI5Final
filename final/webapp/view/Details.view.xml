@@ -55,7 +55,7 @@
                                                 <Text text="Attachments go here ..." />
                                             </IconTabFilter>
 
-                                            <IconTabFilter icon="sap-icon://monitor-payments"
+                                            <IconTabFilter icon="sap-icon://currency"
                                                            text="{i18n>record}">
                                                 <commons:Timeline >
                                                     <commons:content>
@@ -83,7 +83,7 @@
                                 press="onDeleteEmployee"
                                 type="Reject"/>
                         <Button text="{i18n>promoteEmployeeButton}" 
-                                press="onPromoteEmployee"
+                                press="onOpenPromotionDialog"
                                 type="Accept"/>
                     </contentRight>
                 </Bar>

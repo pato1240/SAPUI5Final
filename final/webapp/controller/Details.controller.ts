@@ -8,11 +8,14 @@ import { Button$PressEvent } from "sap/m/Button";
 import Filter from "sap/ui/model/Filter";
 import FilterOperator from "sap/ui/model/FilterOperator";
 import JSONModel from "sap/ui/model/json/JSONModel";
+import Dialog from "sap/m/Dialog";
 
 /**
  * @namespace com.logali.final.controller
  */
 export default class Details extends BaseController {
+
+    private dialog: Dialog
 
     /*eslint-disable @typescript-eslint/no-empty-function*/
     public onInit(): void {
@@ -72,5 +75,24 @@ export default class Details extends BaseController {
         const results = await utils.read(new JSONModel(object));
         console.log(results);
     }
+
+    public async onOpenPromotionDialog(): Promise<void> {
+        if(!this.dialog){
+            this.dialog = await <Promise<Dialog>>this.loadFragment({
+                name: "com.logali.final.fragment.PromoteDialog"
+            });
+        }
+        this.dialog.open();
+    }
+
+    public onCloseDialog(): void {
+        this.dialog.close();
+    }
+
+    public onSavePromotion(): void {
+
+    }
+
+
     
 }

@@ -12,7 +12,9 @@
 
     <VBox>
         <Label text="{i18n>comment}" />
-        <TextArea  value="{form>/Comment}"  growing="true" width="100%"/>
+        <TextArea  value="{form>/Comment}"  
+                   growing="true"
+                   width="100%"/>
         <upload:UploadSet id="UploadSet"/>
     </VBox> 
 

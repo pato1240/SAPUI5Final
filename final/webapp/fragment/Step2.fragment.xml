@@ -10,7 +10,7 @@
         class="sapUiMediumMarginBottom">
     </MessageStrip>
 
-    <VBox class="sapUiSmallMargin" id="test1">
+    <VBox class="sapUiSmallMargin">
 
         <form:SimpleForm id="simpleFormStep2"
         editable="true"

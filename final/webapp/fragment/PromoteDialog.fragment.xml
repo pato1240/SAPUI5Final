@@ -1,0 +1,53 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+
+    <Dialog id="promoteDialog"
+            title="{i18n>promoteTitle}">
+
+        <content>
+
+        <VBox>
+            <form:SimpleForm id="promotionForm">
+                <form:content>
+                    <Label text="{i18n>salary}" />
+                    <Input value="{form>/SalaryPromotion}"/>
+
+                    <Label text="{i18n>date}" />
+                    <DatePicker dateValue="{form>/DatePromotion}"
+                                placeholder="{i18n>datePlaceHolder}"/>
+
+                    <Label text="{i18n>comment}"/>
+                    <TextArea  value="{form>/CommentPromotion}"  
+                               growing="true"
+                               width="100%"/>
+                </form:content>
+            
+            </form:SimpleForm>
+        
+        </VBox>
+
+
+
+        
+        
+        </content>
+
+        <beginButton>
+            <Button text="{i18n>acceptButton}"
+                tooltip="{i18n>acceptButton}"
+                press="onSavePromotion"
+                type="Emphasized"/>
+        </beginButton>
+
+        <endButton>
+            <Button text="{i18n>cancelButton}"
+                    tooltip="{i18n>cancelButton}"
+                    press="onCloseDialog"/>
+        </endButton>
+    
+    
+    </Dialog>
+
+</core:FragmentDefinition>

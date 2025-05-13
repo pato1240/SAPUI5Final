@@ -22,13 +22,8 @@ export default class CreateEmployee extends BaseController {
     /*eslint-disable @typescript-eslint/no-empty-function*/
           
     public onInit(): void {
-        // this.form();
+        
     }
-
-    // private form() : void {
-    //     const model = new JSONModel([]);
-    //     this.setModel(model, "form");
-    // }
 
     public handleWizardCancel(): void {
         const wizard = this.byId("createEmployeeWizard") as Wizard;
