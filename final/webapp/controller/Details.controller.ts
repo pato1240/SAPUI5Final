@@ -4,6 +4,10 @@ import BaseController from "./BaseController";
 import NavContainer from "sap/m/NavContainer";
 import Page from "sap/m/Page";
 import Utils from "../utils/Utils";
+import { Button$PressEvent } from "sap/m/Button";
+import Filter from "sap/ui/model/Filter";
+import FilterOperator from "sap/ui/model/FilterOperator";
+import JSONModel from "sap/ui/model/json/JSONModel";
 
 /**
  * @namespace com.logali.final.controller
@@ -26,25 +30,47 @@ export default class Details extends BaseController {
         view?.bindElement({
             path: '/Employees/' + (parseInt(index)-1),
             model: 'employees',
-            // events: {
-            //     change: function() {
-            //         $this.read();
-            //     }
-            // }
+            events: {
+                change: function() {
+                    $this.read();
+                }
+            }
         });
 
     }
 
     private navTo(sPageId: string) {
         let oNavContainer = this.getView()?.byId("detailsNavContainer") as NavContainer;
-        console.log(oNavContainer);
         let oPage = this.getView()?.byId(sPageId) as Page;
         oNavContainer.to(oPage);
-
     }    
 
-    public onDeleteEmployee() {
-        
+    public async onDeleteEmployee(event: Button$PressEvent): Promise<void> {
+        console.log("voy a borrar");
+        const employeeId = "0000" ;
+        const sapId = "valeria.roortiz@gmail.com" ;
+        const utils = new Utils(this);
+
+        let object = {
+            url: "/User(EmployeeId='"+employeeId+"',SapId='"+sapId+"')"
+        };
+        console.log(object);
+        await utils.crud('delete', new JSONModel(object));
+    }
+
+    private async read(): Promise<void> {
+        const utils = new Utils(this);
+        const sapId = utils.getSapId();
+        // const employeeID
+
+        const object = {
+            url: "/Users",
+            filters: [
+                new Filter ("SapId", FilterOperator.EQ, sapId),
+            ]
+        };
+        const results = await utils.read(new JSONModel(object));
+        console.log(results);
     }
     
 }

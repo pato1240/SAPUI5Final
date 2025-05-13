@@ -1,5 +1,6 @@
 import ResourceBundle from "sap/base/i18n/ResourceBundle";
 import MessageBox from "sap/m/MessageBox";
+import Message from "sap/ui/core/message/Message";
 import Controller from "sap/ui/core/mvc/Controller";
 import UIComponent from "sap/ui/core/UIComponent";
 import JSONModel from "sap/ui/model/json/JSONModel";
@@ -29,9 +30,9 @@ export default class Utils {
         return "valeria.roortiz@gmail.com";
     }
 
-    public async crud (action: string, object?: JSONModel) : Promise<void | ODataListBinding> {
+    public async crud (action: string, object: JSONModel) : Promise<void | ODataListBinding> {
         const resouceBundle = this.resouceBundle;
-        const reference = this;
+        const $this = this;
 
         return new Promise((resolve,reject)=>{
             MessageBox.confirm(resouceBundle.getText("question") || 'no text defined', {
@@ -40,9 +41,9 @@ export default class Utils {
                 onClose: async function (sAction : string) {
                     if (sAction === MessageBox.Action.OK) {
                         switch (action) {
-                            case 'create': resolve(await reference.create(object)); break;
-                            case 'update': resolve(await reference.update(object)); break;
-                            case 'delete': resolve(await reference.delete(object)); break;
+                            case 'create': resolve(await $this.create(object)); break;
+                            case 'update': resolve(await $this.update(object)); break;
+                            case 'delete': resolve(await $this.delete(object)); break;
                         }
                     }
                 }
@@ -69,10 +70,6 @@ export default class Utils {
                 }
             });
         // });
-
-
-
-
     }
 
     private async update (object : JSONModel) : Promise<void | ODataListBinding> {
@@ -80,7 +77,21 @@ export default class Utils {
     }
 
     private async delete (object : JSONModel) : Promise<void | ODataListBinding> {
-    
+        const url = object?.getProperty("/url");
+        const resouceBundle = this.resouceBundle;
+        const $this = this;
+
+        return new Promise((resolve, reject)=>{
+            this.model.remove(url, {
+                success: function() {
+                    MessageBox.success(resouceBundle.getText("success") || 'No text defined');
+                },
+                error: function() {
+                    MessageBox.error(resouceBundle.getText("error") || 'No text deined');
+                    reject();
+                }
+            });
+        });
     }
 
     public async read(object?: JSONModel) : Promise<void | ODataListBinding> {

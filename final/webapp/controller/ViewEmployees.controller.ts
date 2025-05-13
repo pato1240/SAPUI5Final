@@ -21,17 +21,8 @@ export default class ViewEmployees extends BaseController {
     /*eslint-disable @typescript-eslint/no-empty-function*/
 
     public onInit(): void {
-        this.viewModel();
-    }
 
-    private viewModel(): void {
-        const data = {
-            layout: "TwoColumnsMidExpanded"
-        };
-        const model = new JSONModel(data);
-        this.setModel(model,"view");
     }
-
 
     public onNavBack() {
         const router = this.getRouter()
@@ -62,20 +53,20 @@ export default class ViewEmployees extends BaseController {
 
     }
 
-    private async read(): Promise<void> {
-        const utils = new Utils(this);
-        const sapId = utils.getSapId();
+    // private async read(): Promise<void> {
+    //     const utils = new Utils(this);
+    //     const sapId = utils.getSapId();
+    //     // const employeeID
 
-        const object = {
-            url: "/Users",
-            filters: [
-                new Filter ("SapId", FilterOperator.EQ, sapId),
-            ]
-        }
-        const results = await utils.read(new JSONModel(object));
-        console.log(results);
-
-    }
+    //     const object = {
+    //         url: "/Users",
+    //         filters: [
+    //             new Filter ("SapId", FilterOperator.EQ, sapId),
+    //         ]
+    //     };
+    //     const results = await utils.read(new JSONModel(object));
+    //     console.log(results);
+    // }
 
     public onNavToDetails(event: Event){
         

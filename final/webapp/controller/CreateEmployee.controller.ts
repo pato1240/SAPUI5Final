@@ -205,7 +205,7 @@ export default class CreateEmployee extends BaseController {
         const utils = new Utils(this);
 
         const object = {
-            url: "/Users",
+            url: '/Users',
             data: {
                 SapId: utils.getSapId(),
                 Type: formData.Type,
@@ -217,7 +217,7 @@ export default class CreateEmployee extends BaseController {
             }
         }
         console.log(object);
-        //await utils.crud('create', new JSONModel(object));
+        await utils.crud('create', new JSONModel(object));
     }
 
 }
