@@ -89,27 +89,18 @@ export default class ViewEmployees extends BaseController {
         // console.log(results);
     }
 
-    private showEmployees(results : ODataListBinding | void ) : Promise<void> {
+    private showEmployees(results : ODataListBinding | void ) : void {
         const array = results as any;
         const formModel = this.getModel("form") as JSONModel;
         formModel.setData(array.results);
         console.log(array.results);
-        array.results.forEach(async (employee: object, index: number)=>{
-            console.log(employee);
-            console.log(index);
-            // const newIncidence = await <Promise<Panel>> this.loadFragment({name:"com.logaligroup.employees.fragment.NewIncidence"});
-            // newIncidence.bindElement("form>/"+index);
-            // panel.addContent(newIncidence);
-        }); 
-        
-
     }
 
     public onNavToDetails(event: Event){
-        
         const item = event.getSource() as ObjectListItem;
-        const bindingContext = item.getBindingContext("employees") as Context;
-        const id = bindingContext.getProperty("EmployeeID");
+        const bindingContext = item.getBindingContext("form") as Context;
+        const id = bindingContext.getProperty("EmployeeId");
+        console.log(id);
 
         const router = this.getRouter();
         router.navTo("RouteDetails",{

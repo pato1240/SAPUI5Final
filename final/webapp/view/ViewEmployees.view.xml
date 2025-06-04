@@ -10,7 +10,7 @@
 
             
             <Table id="employeesTable"
-                    items="{employees>/Employees}">
+                    items="{form>/}">
                 
                 <headerToolbar>
                     <OverflowToolbar>
@@ -29,8 +29,8 @@
                     <ColumnListItem type="Navigation"
                                     press="onNavToDetails">
                         <cells>
-                            <ObjectIdentifier title="{employees>FirstName} {employees>LastName}" 
-                                              text="12345"/>
+                            <ObjectIdentifier title="{form>FirstName} {form>LastName}" 
+                                              text="{form>Dni}"/>
                         </cells>
                     </ColumnListItem>
                 </items>

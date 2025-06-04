@@ -29,7 +29,7 @@
                     <uxap:ObjectPageDynamicHeaderTitle>
                         
                         <uxap:expandedHeading>
-                        <Title text="{employees>FirstName}-{employees>LastName}"
+                        <Title text="{form>/FirstName} {form>/LastName}"
                             wrapping="true"/>
                         </uxap:expandedHeading>
 
