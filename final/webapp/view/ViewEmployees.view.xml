@@ -4,10 +4,11 @@
     xmlns:f="sap.f"
     xmlns="sap.m">
 
-    <f:DynamicPage>
+    <f:DynamicPage id="viewEmployees">
 
         <f:content>
 
+            
             <Table id="employeesTable"
                     items="{employees>/Employees}">
                 

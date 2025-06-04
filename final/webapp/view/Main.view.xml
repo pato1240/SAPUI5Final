@@ -55,7 +55,7 @@
                         <f:items>
                             <GenericTile header="{tilesCollection>Title}"
                                          headerImage="{tilesCollection>Icon}"
-                                         press="onPressTile">
+                                         press="handleUrlPress">
                             	<layoutData>
 				                    <f:GridContainerItemLayoutData rows="2" columns="2" />
 			                    </layoutData>

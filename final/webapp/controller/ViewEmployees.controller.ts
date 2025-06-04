@@ -12,6 +12,9 @@ import ObjectListItem from "sap/m/ObjectListItem";
 import Context from "sap/ui/model/Context";
 import NavContainer from "sap/m/NavContainer";
 import Page from "sap/m/Page";
+import { Route$PatternMatchedEvent } from "sap/ui/core/routing/Route";
+import View from "sap/ui/core/mvc/View";
+import ODataListBinding from "sap/ui/model/odata/v2/ODataListBinding";
 
 /**
  * @namespace com.logali.final.controller
@@ -21,7 +24,23 @@ export default class ViewEmployees extends BaseController {
     /*eslint-disable @typescript-eslint/no-empty-function*/
 
     public onInit(): void {
+        const router = this.getRouter();    
+        router.getRoute("RouteViewEmployees")?.attachPatternMatched(this.onObjectMatched.bind(this));
+    }
 
+    private onObjectMatched (event: Route$PatternMatchedEvent): void {
+        const view = this.getView() as View;
+        const $this = this;
+
+        view?.bindElement({
+            path: '/Employees/',
+            model: 'employees',
+            events: {
+                change: function() {
+                    $this.read();
+                }
+            }
+        });
     }
 
     public onNavBack() {
@@ -53,20 +72,38 @@ export default class ViewEmployees extends BaseController {
 
     }
 
-    // private async read(): Promise<void> {
-    //     const utils = new Utils(this);
-    //     const sapId = utils.getSapId();
-    //     // const employeeID
+    private async read(): Promise<void> {
+        const utils = new Utils(this);
+        const sapId = utils.getSapId();
+        const employeeID = "9999";
 
-    //     const object = {
-    //         url: "/Users",
-    //         filters: [
-    //             new Filter ("SapId", FilterOperator.EQ, sapId),
-    //         ]
-    //     };
-    //     const results = await utils.read(new JSONModel(object));
-    //     console.log(results);
-    // }
+        const object = {
+            url: "/Users",
+            filters: [
+                new Filter ("SapId", FilterOperator.EQ, sapId),
+                // new Filter ("EmployeeId", FilterOperator.EQ, employeeID)
+            ]
+        };
+        const results = await utils.read(new JSONModel(object));
+        this.showEmployees(results);
+        // console.log(results);
+    }
+
+    private showEmployees(results : ODataListBinding | void ) : Promise<void> {
+        const array = results as any;
+        const formModel = this.getModel("form") as JSONModel;
+        formModel.setData(array.results);
+        console.log(array.results);
+        array.results.forEach(async (employee: object, index: number)=>{
+            console.log(employee);
+            console.log(index);
+            // const newIncidence = await <Promise<Panel>> this.loadFragment({name:"com.logaligroup.employees.fragment.NewIncidence"});
+            // newIncidence.bindElement("form>/"+index);
+            // panel.addContent(newIncidence);
+        }); 
+        
+
+    }
 
     public onNavToDetails(event: Event){
         

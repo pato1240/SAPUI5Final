@@ -49,13 +49,13 @@ export default class Details extends BaseController {
     }    
 
     public async onDeleteEmployee(event: Button$PressEvent): Promise<void> {
-        console.log("voy a borrar");
-        const employeeId = "0000" ;
-        const sapId = "valeria.roortiz@gmail.com" ;
-        const utils = new Utils(this);
 
+        const utils = new Utils(this);
+        const employeeId = "0002";
+        const sapId = utils.getSapId();
+        
         let object = {
-            url: "/User(EmployeeId='"+employeeId+"',SapId='"+sapId+"')"
+            url: "/Users(EmployeeId='"+employeeId+"',SapId='"+sapId+"')"
         };
         console.log(object);
         await utils.crud('delete', new JSONModel(object));
@@ -64,12 +64,13 @@ export default class Details extends BaseController {
     private async read(): Promise<void> {
         const utils = new Utils(this);
         const sapId = utils.getSapId();
-        // const employeeID
+        const employeeID = "9999";
 
         const object = {
             url: "/Users",
             filters: [
                 new Filter ("SapId", FilterOperator.EQ, sapId),
+                // new Filter ("EmployeeId", FilterOperator.EQ, employeeID)
             ]
         };
         const results = await utils.read(new JSONModel(object));

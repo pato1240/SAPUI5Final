@@ -15,8 +15,7 @@
     "TileCollectionPedidos": [
         {
             "Title": "Firmar pedido",
-            "Icon": "sap-icon://signature",
-            "View": "ViewList"
+            "Icon": "sap-icon://signature"
         }
     ]
 }

@@ -13,6 +13,8 @@ import NavContainer from "sap/m/NavContainer";
 import Page from "sap/m/Page";
 import View from "sap/ui/core/mvc/View";
 import Utils from "../utils/Utils";
+import Filter from "sap/ui/model/Filter";
+import FilterOperator from "sap/ui/model/FilterOperator";
 
 
 /**
@@ -22,8 +24,13 @@ export default class CreateEmployee extends BaseController {
     /*eslint-disable @typescript-eslint/no-empty-function*/
           
     public onInit(): void {
-        
+        this.employeeId();
     }
+
+    private employeeId() : void {
+        const model = new JSONModel([]);
+        this.setModel(model,"employeeID");
+    } 
 
     public handleWizardCancel(): void {
         const wizard = this.byId("createEmployeeWizard") as Wizard;
@@ -197,11 +204,23 @@ export default class CreateEmployee extends BaseController {
     public async handleWizardSave(): Promise<void> {
         const formModel = this.getModel("form") as JSONModel;
         const formData = formModel.getData() as any;
-        const utils = new Utils(this);
 
-        const object = {
+        const utils = new Utils(this);
+        const sapId = utils.getSapId();
+
+        const objectRead = {
+            url: "/Users",
+            filters: [ new Filter ("SapId", FilterOperator.EQ, sapId)]
+        };
+        const results = await utils.read(new JSONModel(objectRead)) as any;
+        const lastId = results.results[results.results.length - 1].EmployeeId as string;
+        const newId = Number(lastId) + 1 as Number; 
+        console.log(newId);
+
+        const objectCreate = {
             url: '/Users',
             data: {
+                EmployeeId: newId.toString(),
                 SapId: utils.getSapId(),
                 Type: formData.Type,
                 FirstName: formData.Name,
@@ -211,8 +230,8 @@ export default class CreateEmployee extends BaseController {
                 Comments: formData.Comment            
             }
         }
-        console.log(object);
-        await utils.crud('create', new JSONModel(object));
+        console.log(objectCreate);
+        await utils.crud('create', new JSONModel(objectCreate));
     }
 
 }

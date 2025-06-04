@@ -81,17 +81,17 @@ export default class Utils {
         const resouceBundle = this.resouceBundle;
         const $this = this;
 
-        return new Promise((resolve, reject)=>{
+        // return new Promise((resolve, reject)=>{
             this.model.remove(url, {
                 success: function() {
                     MessageBox.success(resouceBundle.getText("success") || 'No text defined');
                 },
                 error: function() {
-                    MessageBox.error(resouceBundle.getText("error") || 'No text deined');
-                    reject();
+                    MessageBox.error(resouceBundle.getText("error") || 'No text defined');
+                    // reject();
                 }
             });
-        });
+        // });
     }
 
     public async read(object?: JSONModel) : Promise<void | ODataListBinding> {
@@ -111,16 +111,6 @@ export default class Utils {
             });
         });
     }
-
-
-
-    
-   
-
-    
-   
-
-
 
 }
 
