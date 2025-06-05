@@ -120,7 +120,7 @@
         },
         {
           "name": "RouteDetails",
-          "pattern": "Employee({index})",
+          "pattern": "Employee({id})",
           "target": [
             "TargetViewEmployees",
             "TargetDetail"

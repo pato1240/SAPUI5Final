@@ -29,13 +29,13 @@
                     <uxap:ObjectPageDynamicHeaderTitle>
                         
                         <uxap:expandedHeading>
-                        <Title text="{form>/FirstName} {form>/LastName}"
+                        <Title text="{form>FirstName} {form>/LastName} {form>LastName}"
                             wrapping="true"/>
                         </uxap:expandedHeading>
 
                         <uxap:expandedContent>
                             <Text text="Hola a todos"/>
-                            <Text text="{employees>LastName}"/>
+                            <Text text="{form>LastName}"/>
                         </uxap:expandedContent>
                     
                     </uxap:ObjectPageDynamicHeaderTitle>

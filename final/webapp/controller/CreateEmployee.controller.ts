@@ -215,7 +215,6 @@ export default class CreateEmployee extends BaseController {
         const results = await utils.read(new JSONModel(objectRead)) as any;
         const lastId = results.results[results.results.length - 1].EmployeeId as string;
         const newId = Number(lastId) + 1 as Number; 
-        console.log(newId);
 
         const objectCreate = {
             url: '/Users',

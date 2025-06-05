@@ -33,8 +33,8 @@ export default class ViewEmployees extends BaseController {
         const $this = this;
 
         view?.bindElement({
-            path: '/Employees/',
-            model: 'employees',
+            path: 'form>/',
+            model: 'form',
             events: {
                 change: function() {
                     $this.read();
@@ -50,7 +50,6 @@ export default class ViewEmployees extends BaseController {
 
     private onSearch(event: SearchField$ChangeEvent) : void {
         let sEmployee = (event.getSource() as SearchField).getValue();
-        console.log(sEmployee);
 
         let aFilter = [];
 
@@ -75,39 +74,31 @@ export default class ViewEmployees extends BaseController {
     private async read(): Promise<void> {
         const utils = new Utils(this);
         const sapId = utils.getSapId();
-        const employeeID = "9999";
 
         const object = {
             url: "/Users",
             filters: [
                 new Filter ("SapId", FilterOperator.EQ, sapId),
-                // new Filter ("EmployeeId", FilterOperator.EQ, employeeID)
             ]
         };
         const results = await utils.read(new JSONModel(object));
         this.showEmployees(results);
-        // console.log(results);
     }
 
     private showEmployees(results : ODataListBinding | void ) : void {
         const array = results as any;
         const formModel = this.getModel("form") as JSONModel;
         formModel.setData(array.results);
-        console.log(array.results);
     }
 
     public onNavToDetails(event: Event){
         const item = event.getSource() as ObjectListItem;
         const bindingContext = item.getBindingContext("form") as Context;
         const id = bindingContext.getProperty("EmployeeId");
-        console.log(id);
 
         const router = this.getRouter();
         router.navTo("RouteDetails",{
-            index: id
+            id: id
         });
-
     }
-
-
 }

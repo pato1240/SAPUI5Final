@@ -25,21 +25,25 @@ export default class Details extends BaseController {
 
     private onObjectMatched (event: Route$PatternMatchedEvent): void {
         this.navTo("detailsPage");
-        const arg = event.getParameter("arguments")as any;
-        const index = arg.index;
+
+        const arg = event.getParameter("arguments") as any;
+        const id = arg.id;
+        const aData = (this.getModel("form") as JSONModel).getData() as any;
+        const index = aData.findIndex((obj: { EmployeeId: any; }) => obj.EmployeeId === id);
         const view = this.getView() as View;
         const $this = this;
 
+        console.log(id);
+
         view?.bindElement({
-            path: '/Employees/' + (parseInt(index)-1),
-            model: 'employees',
+            path: 'form>/' + index,
+            model: 'form',
             events: {
                 change: function() {
-                    $this.read();
+                    $this.read(id);
                 }
             }
         });
-
     }
 
     private navTo(sPageId: string) {
@@ -49,28 +53,33 @@ export default class Details extends BaseController {
     }    
 
     public async onDeleteEmployee(event: Button$PressEvent): Promise<void> {
-
+        const formModel = this.getModel("form") as JSONModel;
+        const formData = formModel.getData() as any;
         const utils = new Utils(this);
-        const employeeId = "0002";
+
+        const employeeId = formData.EmployeeId;
         const sapId = utils.getSapId();
+
+        console.log(formData);
+        console.log(employeeId);
         
         let object = {
             url: "/Users(EmployeeId='"+employeeId+"',SapId='"+sapId+"')"
         };
         console.log(object);
-        await utils.crud('delete', new JSONModel(object));
+        //await utils.crud('delete', new JSONModel(object));
     }
 
-    private async read(): Promise<void> {
+    private async read(id: string): Promise<void> {
         const utils = new Utils(this);
         const sapId = utils.getSapId();
-        const employeeID = "9999";
+        const employeeID = id;
 
         const object = {
             url: "/Users",
             filters: [
                 new Filter ("SapId", FilterOperator.EQ, sapId),
-                // new Filter ("EmployeeId", FilterOperator.EQ, employeeID)
+                new Filter ("EmployeeId", FilterOperator.EQ, employeeID)
             ]
         };
         const results = await utils.read(new JSONModel(object));
