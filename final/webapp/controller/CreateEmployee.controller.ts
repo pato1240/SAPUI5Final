@@ -231,6 +231,9 @@ export default class CreateEmployee extends BaseController {
         }
         console.log(objectCreate);
         await utils.crud('create', new JSONModel(objectCreate));
+        
+        const router = this.getRouter();
+        router.navTo("RouteMain");
     }
 
 }

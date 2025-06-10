@@ -1,0 +1,28 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:commons="sap.suite.ui.commons">
+
+    <IconTabBar>
+        <items>
+            <IconTabFilter icon="sap-icon://attachment"
+                            text="{i18n>files}"
+                            design="Horizontal">
+                <Text text="Attachments go here ..." />
+            </IconTabFilter>
+
+            <IconTabFilter icon="sap-icon://money-bills"
+                            text="{i18n>record}"
+                            design="Horizontal">
+                <commons:Timeline >
+                    <commons:content>
+                        <commons:TimelineItem >
+                        
+                        </commons:TimelineItem>
+                    </commons:content>
+                </commons:Timeline>
+            </IconTabFilter>
+        </items>
+    </IconTabBar>
+
+</core:FragmentDefinition>

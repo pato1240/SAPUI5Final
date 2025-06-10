@@ -12,7 +12,7 @@ export default class App extends BaseController {
         this.loadEmployees();
     }
 
-        private form() : void {
+    private form() : void {
         const model = new JSONModel([]);
         this.setModel(model, "form");
     }

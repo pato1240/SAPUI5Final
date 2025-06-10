@@ -4,11 +4,12 @@ import BaseController from "./BaseController";
 import NavContainer from "sap/m/NavContainer";
 import Page from "sap/m/Page";
 import Utils from "../utils/Utils";
-import { Button$PressEvent } from "sap/m/Button";
+import Button, { Button$PressEvent } from "sap/m/Button";
 import Filter from "sap/ui/model/Filter";
 import FilterOperator from "sap/ui/model/FilterOperator";
 import JSONModel from "sap/ui/model/json/JSONModel";
 import Dialog from "sap/m/Dialog";
+import ODataListBinding from "sap/ui/model/odata/v2/ODataListBinding";
 
 /**
  * @namespace com.logali.final.controller
@@ -21,6 +22,12 @@ export default class Details extends BaseController {
     public onInit(): void {
         const router = this.getRouter();    
         router.getRoute("RouteDetails")?.attachPatternMatched(this.onObjectMatched.bind(this));
+        this.detailsForm();
+    }
+
+    private detailsForm() : void {
+        const model = new JSONModel([]);
+        this.setModel(model, "employeeDetailsForm");
     }
 
     private onObjectMatched (event: Route$PatternMatchedEvent): void {
@@ -28,16 +35,12 @@ export default class Details extends BaseController {
 
         const arg = event.getParameter("arguments") as any;
         const id = arg.id;
-        const aData = (this.getModel("form") as JSONModel).getData() as any;
-        const index = aData.findIndex((obj: { EmployeeId: any; }) => obj.EmployeeId === id);
         const view = this.getView() as View;
         const $this = this;
 
-        console.log(id);
-
         view?.bindElement({
-            path: 'form>/' + index,
-            model: 'form',
+            path: 'employeeDetailsForm>/' + 0,
+            model: 'employeeDetailsForm',
             events: {
                 change: function() {
                     $this.read(id);
@@ -53,21 +56,31 @@ export default class Details extends BaseController {
     }    
 
     public async onDeleteEmployee(event: Button$PressEvent): Promise<void> {
-        const formModel = this.getModel("form") as JSONModel;
-        const formData = formModel.getData() as any;
+        const button  = event.getSource() as Button;
+        const detailsForm = button.getBindingContext("employeeDetailsForm");
         const utils = new Utils(this);
 
-        const employeeId = formData.EmployeeId;
-        const sapId = utils.getSapId();
-
-        console.log(formData);
-        console.log(employeeId);
+        const employeeId = detailsForm?.getProperty("EmployeeId");
+        const sapId = detailsForm?.getProperty("SapId");
         
         let object = {
             url: "/Users(EmployeeId='"+employeeId+"',SapId='"+sapId+"')"
         };
-        console.log(object);
-        //await utils.crud('delete', new JSONModel(object));
+        await utils.crud('delete', new JSONModel(object));
+
+        const router = this.getRouter();
+        router.navTo("RouteDetails");
+
+        // this.afterDelete();
+    }
+
+    private afterDelete(): void {
+        const formModel = this.getModel("form") as JSONModel;
+        // console.log(formModel.getData());
+        formModel.refresh();
+        const router = this.getRouter();
+        router.navTo("RouteViewEmployees");
+
     }
 
     private async read(id: string): Promise<void> {
@@ -83,7 +96,16 @@ export default class Details extends BaseController {
             ]
         };
         const results = await utils.read(new JSONModel(object));
-        console.log(results);
+        // console.log(results);
+        this.setModelDetails(results);
+    }
+
+    private setModelDetails(results: ODataListBinding | void){
+        const array = results as any;
+        const detailsModel = this.getModel("employeeDetailsForm") as JSONModel;
+        // console.log(detailsModel.getData());
+        detailsModel.setData(array.results);
+        console.log(detailsModel.getData());
     }
 
     public async onOpenPromotionDialog(): Promise<void> {

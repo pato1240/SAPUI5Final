@@ -1,8 +1,9 @@
 <mvc:View controllerName="com.logali.final.controller.Details"
     xmlns="sap.m"
     xmlns:uxap="sap.uxap"
+    xmlns:core="sap.ui.core"
 	xmlns:mvc="sap.ui.core.mvc"
-    xmlns:commons="sap.suite.ui.commons">
+    xmlns:layout="sap.ui.layout">
 
     <NavContainer id="detailsNavContainer">
 
@@ -22,25 +23,60 @@
         <Page id="detailsPage"
               showHeader="false">
 
-            <uxap:ObjectPageLayout>
+            <uxap:ObjectPageLayout  showTitleInHeaderContent="true">
 
                 <uxap:headerTitle>
-
-                    <uxap:ObjectPageDynamicHeaderTitle>
-                        
-                        <uxap:expandedHeading>
-                        <Title text="{form>FirstName} {form>/LastName} {form>LastName}"
-                            wrapping="true"/>
-                        </uxap:expandedHeading>
-
-                        <uxap:expandedContent>
-                            <Text text="Hola a todos"/>
-                            <Text text="{form>LastName}"/>
-                        </uxap:expandedContent>
-                    
-                    </uxap:ObjectPageDynamicHeaderTitle>
-                
+                    <uxap:ObjectPageHeader 
+                                objectImageURI= "{=
+                                    ${employeeDetailsForm>Type} === '0'? 'sap-icon://employee-pane':
+                                    ${employeeDetailsForm>Type} === '1'? 'sap-icon://employee' :
+                                    ${employeeDetailsForm>Type} === '2'? 'sap-icon://account' : ''
+                                    }"
+                                objectTitle="{employeeDetailsForm>FirstName} {employeeDetailsForm>LastName}"
+                                objectImageShape="Circle"
+                                objectImageAlt="{employeeDetailsForm>FirstName} {employeeDetailsForm>LastName}"
+                                objectSubtitle="{employeeDetailsForm>Dni}"
+                                visible="false">
+                    </uxap:ObjectPageHeader>
                 </uxap:headerTitle>
+
+                <uxap:headerContent>
+                    <VBox>
+                        <HBox justifyContent="SpaceBetween" 
+                              class="sapUiSmallMarginTop"
+                              width="39rem"
+                              wrap="Wrap">
+                            <HBox>
+                                <Label text="{i18n>joiningDate}: "/>
+                                <Label text="{
+                                        path: 'employeeDetailsForm>CreationDate',
+                                        type: 'sap.ui.model.type.Date',
+                                        formatOptions: {
+                                        pattern: 'dd MMM. yyyy'
+                                            }
+                                        }" 
+                                />
+                            </HBox>
+                            
+                            <HBox >
+                                <Label text="{i18n>comment}: "/>
+                                <Label text="{employeeDetailsForm>Comments}"/>
+                            </HBox>
+                        </HBox>
+
+                        <HBox >
+                            <Label text="{i18n>type}: "/>
+                            <Label core:require="{
+                                        Formatter: 'com/logali/final/model/formatter'
+                                        }"
+                                    text="{
+                                    path:'employeeDetailsForm>Type',
+                                    formatter: 'Formatter.employeeTypeText.bind($controller)'
+                                    }"
+                                />
+                        </HBox>
+                    </VBox>       
+		        </uxap:headerContent>
 
                 <uxap:sections>
                     
@@ -48,25 +84,11 @@
                         <uxap:subSections>
                             <uxap:ObjectPageSubSection>
                                 <uxap:blocks>
-                                    <IconTabBar>
-                                        <items>
-                                            <IconTabFilter icon="sap-icon://attachment"
-                                                           text="{i18n>files}">
-                                                <Text text="Attachments go here ..." />
-                                            </IconTabFilter>
+                                    
+                                    <core:Fragment id="detailsContentFragment"
+                                                   fragmentName="com.logali.final.fragment.DetailsContent"
+                                                   type="XML"/>
 
-                                            <IconTabFilter icon="sap-icon://currency"
-                                                           text="{i18n>record}">
-                                                <commons:Timeline >
-                                                    <commons:content>
-                                                        <commons:TimelineItem >
-                                                        
-                                                        </commons:TimelineItem>
-                                                    </commons:content>
-                                                </commons:Timeline>
-                                            </IconTabFilter>
-                                        </items>
-                                    </IconTabBar>
                                 </uxap:blocks>
                             </uxap:ObjectPageSubSection>
                         </uxap:subSections>
