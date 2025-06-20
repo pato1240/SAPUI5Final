@@ -5,22 +5,38 @@
 
     <IconTabBar>
         <items>
-            <IconTabFilter icon="sap-icon://attachment"
+            <IconTabFilter  id="attachmentTab"
+                            icon="sap-icon://attachment"
                             text="{i18n>files}"
                             design="Horizontal">
                 <Text text="Attachments go here ..." />
             </IconTabFilter>
 
-            <IconTabFilter icon="sap-icon://money-bills"
-                            text="{i18n>record}"
-                            design="Horizontal">
-                <commons:Timeline >
+            <IconTabFilter id="recordTab"
+                           icon="sap-icon://money-bills"
+                           text="{i18n>record}"
+                           design="Horizontal">
+
+                <commons:Timeline id="timeline"
+                                  alignment="Left"
+                                  groupByType="Year"
+                                  groupBy="dateTime"
+                                  lazyLoading="true"
+                                  showHeaderBar="false">
+
                     <commons:content>
-                        <commons:TimelineItem >
+<!-- 
+                        <commons:TimelineItem 
+                            userName="{employeeDetailsForm>FirstName}"
+                            dateTime="{salaries>CreationDate}"
+                            text="{salaries>Comments}"
+                            icon="sap-icon://circle-task">
+                        </commons:TimelineItem> -->
                         
-                        </commons:TimelineItem>
                     </commons:content>
+
                 </commons:Timeline>
+
             </IconTabFilter>
         </items>
     </IconTabBar>

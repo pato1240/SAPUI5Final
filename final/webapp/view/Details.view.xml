@@ -85,8 +85,7 @@
                             <uxap:ObjectPageSubSection>
                                 <uxap:blocks>
                                     
-                                    <core:Fragment id="detailsContentFragment"
-                                                   fragmentName="com.logali.final.fragment.DetailsContent"
+                                    <core:Fragment fragmentName="com.logali.final.fragment.DetailsContent"
                                                    type="XML"/>
 
                                 </uxap:blocks>

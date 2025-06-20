@@ -10,24 +10,34 @@ import FilterOperator from "sap/ui/model/FilterOperator";
 import JSONModel from "sap/ui/model/json/JSONModel";
 import Dialog from "sap/m/Dialog";
 import ODataListBinding from "sap/ui/model/odata/v2/ODataListBinding";
+import Context from "sap/ui/model/Context";
+import Decimal from "sap/ui/model/odata/type/Decimal";
+import Float from "sap/ui/model/type/Float";
+import Timeline, { Timeline$SelectEvent } from "sap/suite/ui/commons/Timeline";
+import Binding from "sap/ui/model/Binding";
+import TimelineItem from "sap/suite/ui/commons/TimelineItem";
+import IconTabBar, { IconTabBar$SelectEvent } from "sap/m/IconTabBar";
+import IconTabFilter from "sap/m/IconTabFilter";
 
 /**
  * @namespace com.logali.final.controller
  */
 export default class Details extends BaseController {
-
+    /*eslint-disable @typescript-eslint/no-empty-function*/
+    
     private dialog: Dialog
 
-    /*eslint-disable @typescript-eslint/no-empty-function*/
     public onInit(): void {
         const router = this.getRouter();    
         router.getRoute("RouteDetails")?.attachPatternMatched(this.onObjectMatched.bind(this));
-        this.detailsForm();
+        this.loadModels();
     }
 
-    private detailsForm() : void {
-        const model = new JSONModel([]);
-        this.setModel(model, "employeeDetailsForm");
+    private loadModels(){
+        const detailsModel = new JSONModel([]);
+        const salaryModel = new JSONModel([]);
+        this.setModel(detailsModel, "employeeDetailsForm");
+        this.setModel(salaryModel,"salaries")
     }
 
     private onObjectMatched (event: Route$PatternMatchedEvent): void {
@@ -64,30 +74,29 @@ export default class Details extends BaseController {
         const sapId = detailsForm?.getProperty("SapId");
         
         let object = {
-            url: "/Users(EmployeeId='"+employeeId+"',SapId='"+sapId+"')"
+            url:"/Users",
+            urlDelete: "/Users(EmployeeId='"+employeeId+"',SapId='"+sapId+"')",
+            filters: [
+                new Filter ("SapId", FilterOperator.EQ, sapId),
+            ]
         };
-        await utils.crud('delete', new JSONModel(object));
 
-        const router = this.getRouter();
-        router.navTo("RouteDetails");
-
-        // this.afterDelete();
+        const results = await utils.crud('delete', new JSONModel(object));
+        this.showEmployees(results);
+        this.navTo("entrancePage");
     }
 
-    private afterDelete(): void {
+    public showEmployees(results : ODataListBinding | void ) : void {
+        const array = results as any;
         const formModel = this.getModel("form") as JSONModel;
-        // console.log(formModel.getData());
-        formModel.refresh();
-        const router = this.getRouter();
-        router.navTo("RouteViewEmployees");
-
+        formModel.setData(array.results);
     }
 
     private async read(id: string): Promise<void> {
         const utils = new Utils(this);
         const sapId = utils.getSapId();
         const employeeID = id;
-
+        
         const object = {
             url: "/Users",
             filters: [
@@ -95,17 +104,45 @@ export default class Details extends BaseController {
                 new Filter ("EmployeeId", FilterOperator.EQ, employeeID)
             ]
         };
+
+        const objectSalaries = {
+            url: "/Salaries",
+            filters: [
+                new Filter ("EmployeeId", FilterOperator.EQ, employeeID)
+            ]
+        };
+
         const results = await utils.read(new JSONModel(object));
-        // console.log(results);
-        this.setModelDetails(results);
+        const salaries = await utils.read(new JSONModel(objectSalaries));
+
+        this.setToNewModel(results, this.getModel("employeeDetailsForm") as JSONModel);
+        this.setToNewModel(salaries, this.getModel("salaries") as JSONModel)
+        this.bindingTimeline();
+        
     }
 
-    private setModelDetails(results: ODataListBinding | void){
+    private setToNewModel(results: ODataListBinding | void, model: JSONModel): any{
         const array = results as any;
-        const detailsModel = this.getModel("employeeDetailsForm") as JSONModel;
-        // console.log(detailsModel.getData());
-        detailsModel.setData(array.results);
-        console.log(detailsModel.getData());
+        const aData =  model as JSONModel;
+        aData.setData(array.results);
+    }
+
+    private bindingTimeline(): void {
+        const aSalaryData = (this.getModel("salaries") as JSONModel).getData() as any;
+        const oTimeline = this.byId("timeline") as Timeline;
+        // oTimeline.reset();
+        // oTimeline.removeAllContent();
+
+        aSalaryData.forEach((num: number, index: number) => {
+            var oTimelineItem = new TimelineItem({
+                userName:aSalaryData[index].Amount,
+                dateTime: aSalaryData[index].CreationDate,
+                text: aSalaryData[index].Comments,
+                icon: "sap-icon://circle-task"
+            });
+            oTimeline.addContent(oTimelineItem);
+        });
+
     }
 
     public async onOpenPromotionDialog(): Promise<void> {
@@ -121,10 +158,27 @@ export default class Details extends BaseController {
         this.dialog.close();
     }
 
-    public onSavePromotion(): void {
+    public async onSavePromotion(event: Button$PressEvent): Promise<void> {
+        const utils = new Utils(this);
+        const button = event.getSource() as Button;
+        const employeeForm = button.getBindingContext("employeeDetailsForm") as Context;
+        const decimalType = new Decimal({}, {
+            precision: 17,
+            scale:2
+        });
 
+        const object = {
+            url: '/Salaries',
+            data: {
+                // SalaryId:"1",
+                SapId: employeeForm.getProperty("SapId"),
+                EmployeeId: employeeForm.getProperty("EmployeeId"),
+                CreationDate: employeeForm.getProperty("DatePromotion"),
+                Amount: decimalType.parseValue(employeeForm.getProperty("SalaryPromotion"),"float"),
+                Comments: employeeForm.getProperty("CommentPromotion")
+            }
+        }
+        await utils.crud('create', new JSONModel(object));
     }
-
-
     
 }

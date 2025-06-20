@@ -12,16 +12,16 @@
     <HBox justifyContent="Center"
           wrap="Wrap">
 
-        <Button id="buttonInternal" 
+        <Button id="type0" 
                 text="{i18n>internal}" 
                 press="onGoToStep2"
                 enabled="{= ${form>/Enable} }"/>
-        <Button id="buttonSelfEmployed" 
+        <Button id="type1" 
                 text="{i18n>selfEmployed}" 
                 class="sapUiTinyMarginBeginEnd"
                 press="onGoToStep2"
                 enabled="{= ${form>/Enable} }"/>
-        <Button id="buttonManager" 
+        <Button id="type2" 
                 text="{i18n>manager}" 
                 press="onGoToStep2"
                 enabled="{= ${form>/Enable} }"/>

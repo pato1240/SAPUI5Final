@@ -46,13 +46,12 @@
                             }"
                         required="true"/>
                 <Input id="dni"
-                        
                         value="{form>/Dni}"
                         valueState="{form>/DniValueState}"
                         liveChange="onValidateStep2"/>
 
                 <Label text="{=
-                        ${form>/Type} !== '1' ? 'Saldo bruto anual' : 'Precio diario'
+                        ${form>/Type} !== '1' ? 'Salario bruto anual' : 'Precio diario'
                         }"/>
                 <Slider enableTickmarks="true"
                         min="{form>/SliderMin}"

@@ -43,7 +43,7 @@
                 <Text  text="{form>/Dni}"/>
 
                 <Label text="{=
-                            ${form>/Type} !== '1' ? 'Saldo bruto anual' : 'Precio diario'
+                            ${form>/Type} !== '1' ? 'Salario bruto anual' : 'Precio diario'
                             }"/>
                 <Text  text="{form>/SliderValue}"/>
 

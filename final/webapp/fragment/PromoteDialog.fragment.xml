@@ -5,33 +5,26 @@
 
     <Dialog id="promoteDialog"
             title="{i18n>promoteTitle}">
-
         <content>
+            <VBox>
+                <form:SimpleForm id="promotionForm">
+                    <form:content>
+                        <Label text="{i18n>salary}" />
+                        <Input value="{employeeDetailsForm>SalaryPromotion}"/>
 
-        <VBox>
-            <form:SimpleForm id="promotionForm">
-                <form:content>
-                    <Label text="{i18n>salary}" />
-                    <Input value="{form>/SalaryPromotion}"/>
+                        <Label text="{i18n>date}" />
+                        <DatePicker dateValue="{employeeDetailsForm>DatePromotion}"
+                                    placeholder="{i18n>datePlaceHolder}"/>
 
-                    <Label text="{i18n>date}" />
-                    <DatePicker dateValue="{form>/DatePromotion}"
-                                placeholder="{i18n>datePlaceHolder}"/>
-
-                    <Label text="{i18n>comment}"/>
-                    <TextArea  value="{form>/CommentPromotion}"  
-                               growing="true"
-                               width="100%"/>
-                </form:content>
+                        <Label text="{i18n>comment}"/>
+                        <TextArea value="{employeeDetailsForm>CommentPromotion}"  
+                                   growing="true"
+                                   width="100%"/>
+                    </form:content>
+                
+                </form:SimpleForm>
             
-            </form:SimpleForm>
-        
-        </VBox>
-
-
-
-        
-        
+            </VBox>
         </content>
 
         <beginButton>
@@ -46,8 +39,6 @@
                     tooltip="{i18n>cancelButton}"
                     press="onCloseDialog"/>
         </endButton>
-    
-    
     </Dialog>
 
 </core:FragmentDefinition>

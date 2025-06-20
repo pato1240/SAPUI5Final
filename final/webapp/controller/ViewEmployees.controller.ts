@@ -85,10 +85,11 @@ export default class ViewEmployees extends BaseController {
         this.showEmployees(results);
     }
 
-    private showEmployees(results : ODataListBinding | void ) : void {
+    public showEmployees(results : ODataListBinding | void ) : void {
         const array = results as any;
         const formModel = this.getModel("form") as JSONModel;
         formModel.setData(array.results);
+        // console.log(formModel.getData());
     }
 
     public onNavToDetails(event: Event){

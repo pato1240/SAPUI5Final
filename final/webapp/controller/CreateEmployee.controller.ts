@@ -15,6 +15,7 @@ import View from "sap/ui/core/mvc/View";
 import Utils from "../utils/Utils";
 import Filter from "sap/ui/model/Filter";
 import FilterOperator from "sap/ui/model/FilterOperator";
+import Decimal from "sap/ui/model/odata/type/Decimal";
 
 
 /**
@@ -24,7 +25,7 @@ export default class CreateEmployee extends BaseController {
     /*eslint-disable @typescript-eslint/no-empty-function*/
           
     public onInit(): void {
-        this.employeeId();
+        // this.employeeId();
     }
 
     private employeeId() : void {
@@ -34,6 +35,10 @@ export default class CreateEmployee extends BaseController {
 
     public handleWizardCancel(): void {
         const wizard = this.byId("createEmployeeWizard") as Wizard;
+        const step1 = this.byId("EmployeeTypeStep1") as WizardStep
+        const navContainer = this.byId("wizzardNavContainer") as NavContainer;
+        const contentPage = this.byId("wizzardContentPage") as Page;
+        const formModel = this.getModel("form") as JSONModel;
         const resourceBundle = this.getResourceBundle();
         const router = this.getRouter();
 
@@ -43,6 +48,9 @@ export default class CreateEmployee extends BaseController {
             onClose: function(sAction : string) {
                 if (sAction === MessageBox.Action.YES) {
                     wizard.discardProgress(wizard.getSteps()[0], true);
+                    wizard.invalidateStep(step1);
+                    navContainer.to(contentPage);
+                    formModel.setData([]);
                     router.navTo("RouteMain");
                 }
             }
@@ -58,21 +66,21 @@ export default class CreateEmployee extends BaseController {
         const formModel = this.getModel("form") as JSONModel;
 
         switch (buttonId) {
-            case "buttonInternal":
+            case "type0":
                 formModel.setProperty("/Type", "0")
                 formModel.setProperty("/SliderMin", 12000);
                 formModel.setProperty("/SliderMax", 80000);
                 formModel.setProperty("/SliderValue", 24000);
             break;
 
-            case "buttonSelfEmployed":
+            case "type1":
                 formModel.setProperty("/Type", "1")
                 formModel.setProperty("/SliderMin", 100);
                 formModel.setProperty("/SliderMax", 2000);
                 formModel.setProperty("/SliderValue", 400);
             break;
 
-            case "buttonManager":
+            case "type2":
                 formModel.setProperty("/Type", "2")
                 formModel.setProperty("/SliderMin", 50000);
                 formModel.setProperty("/SliderMax", 200000);
@@ -183,7 +191,7 @@ export default class CreateEmployee extends BaseController {
         this.navigationToStep(2);
     }
 
-    private navigationToStep(stepNumber : int) : void {
+    private navigationToStep(stepNumber: int) : void {
         const wizard = this.byId("createEmployeeWizard") as Wizard;
         const navContainer = this.byId("wizzardNavContainer") as NavContainer;
 
@@ -204,36 +212,52 @@ export default class CreateEmployee extends BaseController {
     public async handleWizardSave(): Promise<void> {
         const formModel = this.getModel("form") as JSONModel;
         const formData = formModel.getData() as any;
-
         const utils = new Utils(this);
         const sapId = utils.getSapId();
 
         const objectRead = {
             url: "/Users",
-            filters: [ new Filter ("SapId", FilterOperator.EQ, sapId)]
+            // filters: [ new Filter ("SapId", FilterOperator.EQ, sapId)]
         };
+
         const results = await utils.read(new JSONModel(objectRead)) as any;
-        const lastId = results.results[results.results.length - 1].EmployeeId as string;
-        const newId = Number(lastId) + 1 as Number; 
+        console.log(results);
+        const lastId = results.results[results.results.length - 1].EmployeeId;
+        const newId = Number(lastId) + 1; 
+
+        const decimalType = new Decimal({}, {
+            precision: 17,
+            scale:2
+        });
 
         const objectCreate = {
             url: '/Users',
             data: {
                 EmployeeId: newId.toString(),
-                SapId: utils.getSapId(),
+                SapId: sapId,
                 Type: formData.Type,
                 FirstName: formData.Name,
                 LastName: formData.LastName,
                 Dni: formData.Dni,
                 CreationDate: formData.Date,
-                Comments: formData.Comment            
+                Comments: formData.Comment,
+                UserToSalary: [
+                    {
+                        Amount: decimalType.parseValue(formData.SliderValue,"float"),
+                        Waers: "EUR",
+                        Comments: formData.Comment
+                    }       
+                ]    
             }
+            // filters: [
+            //     new Filter ("SapId", FilterOperator.EQ, sapId),
+            // ]
         }
         console.log(objectCreate);
         await utils.crud('create', new JSONModel(objectCreate));
         
-        const router = this.getRouter();
-        router.navTo("RouteMain");
+        // const router = this.getRouter();
+        // router.navTo("RouteMain");
     }
 
 }
