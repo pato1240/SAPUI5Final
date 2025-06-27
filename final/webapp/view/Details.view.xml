@@ -26,17 +26,17 @@
             <uxap:ObjectPageLayout  showTitleInHeaderContent="true">
 
                 <uxap:headerTitle>
-                    <uxap:ObjectPageHeader 
-                                objectImageURI= "{=
-                                    ${employeeDetailsForm>Type} === '0'? 'sap-icon://employee-pane':
-                                    ${employeeDetailsForm>Type} === '1'? 'sap-icon://employee' :
-                                    ${employeeDetailsForm>Type} === '2'? 'sap-icon://account' : ''
-                                    }"
-                                objectTitle="{employeeDetailsForm>FirstName} {employeeDetailsForm>LastName}"
-                                objectImageShape="Circle"
-                                objectImageAlt="{employeeDetailsForm>FirstName} {employeeDetailsForm>LastName}"
-                                objectSubtitle="{employeeDetailsForm>Dni}"
-                                visible="false">
+                    <uxap:ObjectPageHeader  id="pageHeader"
+                                            objectImageURI= "{=
+                                                ${employeeDetailsForm>Type} === '0'? 'sap-icon://employee-pane':
+                                                ${employeeDetailsForm>Type} === '1'? 'sap-icon://employee' :
+                                                ${employeeDetailsForm>Type} === '2'? 'sap-icon://account' : ''
+                                                }"
+                                            objectTitle="{employeeDetailsForm>FirstName} {employeeDetailsForm>LastName}"
+                                            objectImageShape="Circle"
+                                            objectImageAlt="{employeeDetailsForm>FirstName} {employeeDetailsForm>LastName}"
+                                            objectSubtitle="{employeeDetailsForm>Dni}"
+                                            visible="false">
                     </uxap:ObjectPageHeader>
                 </uxap:headerTitle>
 

@@ -105,7 +105,7 @@ export default class Utils {
         });
     }
 
-    public async read(object?: JSONModel) : Promise<void | ODataListBinding> {
+    public async read(object?: JSONModel) : Promise<void | ODataListBinding > {
         const model = this.model;
         const url = object?.getProperty("/url");
         // const url = "/Users";

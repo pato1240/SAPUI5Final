@@ -15,7 +15,9 @@
         <TextArea  value="{form>/Comment}"  
                    growing="true"
                    width="100%"/>
-        <upload:UploadSet id="UploadSet"/>
+        <upload:UploadSet id="uploadset"
+                          afterItemAdded="onAfterItemAdded">
+        </upload:UploadSet>
     </VBox> 
 
 </core:FragmentDefinition>

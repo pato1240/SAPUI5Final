@@ -1,5 +1,8 @@
 import ResourceBundle from "sap/base/i18n/ResourceBundle"
+import UploadSet from "sap/m/upload/UploadSet";
 import Controller from "sap/ui/core/mvc/Controller"
+import JSONModel from "sap/ui/model/json/JSONModel";
+import ListBinding from "sap/ui/model/ListBinding";
 import ResourceModel from "sap/ui/model/resource/ResourceModel"
 
 export default {
@@ -12,6 +15,6 @@ export default {
             case '2' : return resourceBundle.getText("manager");
             default: return employeeType;
         }
-
     }
+
 }

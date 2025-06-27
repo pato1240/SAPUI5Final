@@ -24,11 +24,12 @@ export default class ViewEmployees extends BaseController {
     /*eslint-disable @typescript-eslint/no-empty-function*/
 
     public onInit(): void {
-        const router = this.getRouter();    
+        const router = this.getRouter();   
         router.getRoute("RouteViewEmployees")?.attachPatternMatched(this.onObjectMatched.bind(this));
     }
 
     private onObjectMatched (event: Route$PatternMatchedEvent): void {
+
         const view = this.getView() as View;
         const $this = this;
 

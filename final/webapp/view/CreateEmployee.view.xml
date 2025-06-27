@@ -21,8 +21,7 @@
                                     title="{i18n>employeeTypeTitle}"
                                     validated="false">
 
-                            <core:Fragment id="step1Fragment"
-                                           fragmentName="com.logali.final.fragment.Step1"
+                            <core:Fragment fragmentName="com.logali.final.fragment.Step1"
                                            type="XML"/>
                         </WizardStep>
 
@@ -39,8 +38,7 @@
                         <WizardStep id="AdditionalInfoStep3"
                                     title="{i18n>additionalInfoTitle}">
                                 
-                            <core:Fragment id="step3Fragment"
-                                           fragmentName="com.logali.final.fragment.Step3"
+                            <core:Fragment fragmentName="com.logali.final.fragment.Step3"
                                            type="XML"/>
 
                         </WizardStep>
@@ -75,8 +73,7 @@
 
                 <content>
 
-                    <core:Fragment id="reviewFragment"
-                                   fragmentName="com.logali.final.fragment.Review"
+                    <core:Fragment fragmentName="com.logali.final.fragment.Review"
                                    type="XML"/>
 
                 </content>

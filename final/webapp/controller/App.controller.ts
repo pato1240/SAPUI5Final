@@ -14,6 +14,11 @@ export default class App extends BaseController {
 
     private form() : void {
         const model = new JSONModel([]);
+        const modelTitle = {
+            title: " "
+        };
+        const title = new JSONModel(modelTitle);
+        this.setModel(title, "title");
         this.setModel(model, "form");
     }
 

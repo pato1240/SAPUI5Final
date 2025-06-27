@@ -7,7 +7,6 @@
     <f:DynamicPage id="viewEmployees">
 
         <f:content>
-
             
             <Table id="employeesTable"
                     items="{form>/}">
@@ -15,9 +14,9 @@
                 <headerToolbar>
                     <OverflowToolbar>
                         <OverflowToolbarButton icon="sap-icon://nav-back" 
-                                               press="onNavBack"/>
+                                            press="onNavBack"/>
                         <SearchField search="onSearch"
-                                     width="auto" />
+                                    width="auto" />
                     </OverflowToolbar>
                 </headerToolbar>
 
@@ -30,7 +29,7 @@
                                     press="onNavToDetails">
                         <cells>
                             <ObjectIdentifier title="{form>FirstName} {form>LastName}" 
-                                              text="{form>Dni}"/>
+                                            text="{form>Dni}"/>
                         </cells>
                     </ColumnListItem>
                 </items>

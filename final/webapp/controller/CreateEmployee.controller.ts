@@ -16,6 +16,12 @@ import Utils from "../utils/Utils";
 import Filter from "sap/ui/model/Filter";
 import FilterOperator from "sap/ui/model/FilterOperator";
 import Decimal from "sap/ui/model/odata/type/Decimal";
+import UploadSet, { UploadSet$AfterItemAddedEvent, UploadSet$UploadCompletedEvent } from "sap/m/upload/UploadSet";
+import UploadSetItem from "sap/m/upload/UploadSetItem";
+import ODataModel from "sap/ui/model/odata/v2/ODataModel";
+import Item from "sap/ui/core/Item";
+import Title from "sap/m/Title";
+import Text from "sap/m/Text";
 
 
 /**
@@ -23,15 +29,12 @@ import Decimal from "sap/ui/model/odata/type/Decimal";
  */
 export default class CreateEmployee extends BaseController {
     /*eslint-disable @typescript-eslint/no-empty-function*/
+
+    private aItems = [] as any;
           
     public onInit(): void {
-        // this.employeeId();
-    }
 
-    private employeeId() : void {
-        const model = new JSONModel([]);
-        this.setModel(model,"employeeID");
-    } 
+    }
 
     public handleWizardCancel(): void {
         const wizard = this.byId("createEmployeeWizard") as Wizard;
@@ -62,25 +65,25 @@ export default class CreateEmployee extends BaseController {
         wizard.setCurrentStep(this.byId("EmployeeDataStep2") as WizardStep);
 
         const buttonEmployeeSelected = event.getSource() as Button;
-        const buttonId = (buttonEmployeeSelected.getId() as String).slice(78);
+        const employeeType = (buttonEmployeeSelected.getText());
         const formModel = this.getModel("form") as JSONModel;
 
-        switch (buttonId) {
-            case "type0":
+        switch (employeeType) {
+            case "Interno":
                 formModel.setProperty("/Type", "0")
                 formModel.setProperty("/SliderMin", 12000);
                 formModel.setProperty("/SliderMax", 80000);
                 formModel.setProperty("/SliderValue", 24000);
             break;
 
-            case "type1":
+            case "Autónomo":
                 formModel.setProperty("/Type", "1")
                 formModel.setProperty("/SliderMin", 100);
                 formModel.setProperty("/SliderMax", 2000);
                 formModel.setProperty("/SliderValue", 400);
             break;
 
-            case "type2":
+            case "Gerente":
                 formModel.setProperty("/Type", "2")
                 formModel.setProperty("/SliderMin", 50000);
                 formModel.setProperty("/SliderMax", 200000);
@@ -177,6 +180,33 @@ export default class CreateEmployee extends BaseController {
     public onWizardCompleted(): void {
         const navContainer = this.byId("wizzardNavContainer") as NavContainer;
         navContainer.to(this.byId("wizardReviewPage") as Page);
+        this.onDisplayFiles();
+    }
+
+    private onDisplayFiles():void {
+        const uploadSetCreate = this.byId("uploadset") as UploadSet;
+        const aItems = uploadSetCreate.getItems() as any;
+        const oUploadSetReview = this.byId("uploadsetreview") as UploadSet;
+        oUploadSetReview.removeAllItems();
+
+        aItems.forEach((oItem: UploadSetItem)=>{
+            const item = new UploadSetItem({
+            visibleEdit: false,
+            visibleRemove: false,
+            fileName: oItem.getFileName()
+            });
+            oUploadSetReview.addItem(item);
+        });
+
+        const resourceBundle = this.getResourceBundle();
+        const oHeaderText = this.byId("uploadheader") as Text;
+
+        if(aItems.length !== 0){
+            oUploadSetReview.setVisible(true);
+            oHeaderText?.setText(resourceBundle.getText("uploadTitle", [aItems.length]));
+        } else {
+            oUploadSetReview.setVisible(false);
+        }
     }
 
     public onEditStepOne(): void {
@@ -210,6 +240,12 @@ export default class CreateEmployee extends BaseController {
     }
 
     public async handleWizardSave(): Promise<void> {
+        const wizard = this.byId("createEmployeeWizard") as Wizard;
+        const step1 = this.byId("EmployeeTypeStep1") as WizardStep
+        const navContainer = this.byId("wizzardNavContainer") as NavContainer;
+        const contentPage = this.byId("wizzardContentPage") as Page;
+        const router = this.getRouter();
+
         const formModel = this.getModel("form") as JSONModel;
         const formData = formModel.getData() as any;
         const utils = new Utils(this);
@@ -221,9 +257,9 @@ export default class CreateEmployee extends BaseController {
         };
 
         const results = await utils.read(new JSONModel(objectRead)) as any;
-        console.log(results);
+        // console.log(results);
         const lastId = results.results[results.results.length - 1].EmployeeId;
-        const newId = Number(lastId) + 1; 
+        const newId = (Number(lastId) + 1).toString(); 
 
         const decimalType = new Decimal({}, {
             precision: 17,
@@ -233,7 +269,8 @@ export default class CreateEmployee extends BaseController {
         const objectCreate = {
             url: '/Users',
             data: {
-                EmployeeId: newId.toString(),
+                EmployeeId: newId,
+                // EmployeeId: "0001",
                 SapId: sapId,
                 Type: formData.Type,
                 FirstName: formData.Name,
@@ -255,9 +292,49 @@ export default class CreateEmployee extends BaseController {
         }
         console.log(objectCreate);
         await utils.crud('create', new JSONModel(objectCreate));
-        
-        // const router = this.getRouter();
-        // router.navTo("RouteMain");
+        this.onUploadFiles(sapId, newId);
+
+        wizard.discardProgress(wizard.getSteps()[0], true);
+        wizard.invalidateStep(step1);
+        navContainer.to(contentPage);
+        formModel.setData([]);
+    }
+
+    public onAfterItemAdded (event: UploadSet$AfterItemAddedEvent): void {
+        const item = event.getParameter("item") as UploadSetItem;
+        item.setVisibleEdit(false);
+    }
+
+    public onUploadFiles(sapId: string, employeeId: string) {
+        let oUpload = this.getView()?.byId("uploadset") as UploadSet,
+            oModel = this.getView()?.getModel("zemployees") as ODataModel,
+            sToken = oModel.getSecurityToken(),
+            aItems = oUpload.getItems();
+
+            console.log(aItems);
+
+            aItems.forEach((oItem: UploadSetItem)=>{
+                let sSapId = sapId, 
+                    sEmployeeId = employeeId,
+                    sDocName = oItem.getFileName(),
+                    sSlug = `${sSapId};${sEmployeeId};${sDocName}`;
+                
+                    let addHeaderSlug = new Item({
+                        key: 'slug',
+                        text: sSlug
+                    });
+                    let addHeaderToken = new Item({
+                        key: 'x-csrf-token',
+                        text: sToken
+                    });
+
+                    oItem.addHeaderField(addHeaderSlug);
+                    oItem.addHeaderField(addHeaderToken);
+
+                    oItem.setUploadState("Ready");
+                    oUpload.setUploadUrl("/sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments");
+                    oUpload.uploadItem(oItem);
+            });
     }
 
 }
