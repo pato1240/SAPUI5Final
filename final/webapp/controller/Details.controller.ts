@@ -12,21 +12,14 @@ import Dialog from "sap/m/Dialog";
 import ODataListBinding from "sap/ui/model/odata/v2/ODataListBinding";
 import Context from "sap/ui/model/Context";
 import Decimal from "sap/ui/model/odata/type/Decimal";
-import Float from "sap/ui/model/type/Float";
-import Timeline, { Timeline$SelectEvent } from "sap/suite/ui/commons/Timeline";
-import Binding from "sap/ui/model/Binding";
+import Timeline from "sap/suite/ui/commons/Timeline";
 import TimelineItem from "sap/suite/ui/commons/TimelineItem";
-import IconTabBar, { IconTabBar$SelectEvent } from "sap/m/IconTabBar";
-import IconTabFilter from "sap/m/IconTabFilter";
-import Time from "sap/ui/model/type/Time";
 import UploadSet, { UploadSet$AfterItemRemovedEvent, UploadSet$BeforeUploadStartsEvent, UploadSet$UploadCompletedEvent } from "sap/m/upload/UploadSet";
 import UploadSetItem, { UploadSetItem$OpenPressedEvent } from "sap/m/upload/UploadSetItem";
 import ODataModel from "sap/ui/model/odata/v2/ODataModel";
 import Item from "sap/ui/core/Item";
-import ListBinding from "sap/ui/model/ListBinding";
 import Title from "sap/m/Title";
-import ObjectPageHeader from "sap/uxap/ObjectPageHeader";
-import { ObjectBindingInfo } from "sap/ui/base/ManagedObject";
+
 
 /**
  * @namespace com.logali.final.controller
@@ -68,7 +61,6 @@ export default class Details extends BaseController {
         });
     }
 
-
     private navTo(sPageId: string) {
         let oNavContainer = this.getView()?.byId("detailsNavContainer") as NavContainer;
         let oPage = this.getView()?.byId(sPageId) as Page;
@@ -109,12 +101,7 @@ export default class Details extends BaseController {
         };
 
         const results = await utils.read(new JSONModel(object));
-        // const salaries = await utils.read(new JSONModel(objectSalaries));
-
         this.setToNewModel(results, this.getModel("employeeDetailsForm") as JSONModel);
-        // this.setToNewModel(salaries, this.getModel("salaries") as JSONModel)
-        // this.timelinetest(employeeID);
-        // this.bindingTimeline();
     }
 
     private setToNewModel(results: ODataListBinding | void, model: JSONModel): any{
@@ -153,7 +140,6 @@ export default class Details extends BaseController {
     public onUploadCompleted(event: UploadSet$UploadCompletedEvent) : void {
         const uploadSet = event.getSource();
         uploadSet.getBinding("items")?.refresh();
-        // this.updateHeader();
     }
 
     private onSearchFiles(id: string):void {
@@ -172,7 +158,7 @@ export default class Details extends BaseController {
                 fileName: "{zemployees>DocName}",
                 mediaType: "{zemployees>MimeType}",
                 visibleEdit: false,
-                url: "/",
+                url: "/comlogalifinal/sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments",
                 openPressed: this.onOpenPress.bind(this)
             }),
             events: {
@@ -196,7 +182,7 @@ export default class Details extends BaseController {
         const item = event.getParameter("item") as UploadSetItem;
         const bindingContext = item?.getBindingContext("zemployees") as Context;
         const sPath = bindingContext.getPath();
-        let url = "/sap/opu/odata/sap/ZEMPLOYEES_SRV" + sPath + "/$value";
+        let url = "/comlogalifinal/sap/opu/odata/sap/ZEMPLOYEES_SRV" + sPath + "/$value";
         item.setUrl(url);
     }
 
@@ -212,11 +198,9 @@ export default class Details extends BaseController {
         const utils = new Utils(this);
         await utils.crud('delete', new JSONModel(object));
         item.getBinding("items")?.refresh();
-        // this.updateHeader();
     }
 
     private onSalaryBinding(id: string): void {
-        
         const oTimeline = this.byId("timeline") as Timeline;
         oTimeline.setGroupBy("");
         oTimeline.setGroupByType("None");
@@ -237,7 +221,6 @@ export default class Details extends BaseController {
         oTimeline.setGroupBy("dateTime");
         oTimeline.setGroupByType("Year");
         oTimeline.setSortOldestFirst(false);
-
     }
 
     public async onOpenPromotionDialog(): Promise<void> {

@@ -72,10 +72,8 @@
                 </subHeader>
 
                 <content>
-
                     <core:Fragment fragmentName="com.logali.final.fragment.Review"
                                    type="XML"/>
-
                 </content>
 
                 <footer>

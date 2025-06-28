@@ -1,6 +1,5 @@
 import JSONModel from "sap/ui/model/json/JSONModel";
 import BaseController from "./BaseController";
-import Input from "sap/m/Input";
 import Filter from "sap/ui/model/Filter";
 import FilterOperator from "sap/ui/model/FilterOperator";
 import SearchField, { SearchField$ChangeEvent, SearchField$LiveChangeEvent } from "sap/m/SearchField";
@@ -10,8 +9,6 @@ import Event from "sap/ui/base/Event";
 import Utils from "../utils/Utils";
 import ObjectListItem from "sap/m/ObjectListItem";
 import Context from "sap/ui/model/Context";
-import NavContainer from "sap/m/NavContainer";
-import Page from "sap/m/Page";
 import { Route$PatternMatchedEvent } from "sap/ui/core/routing/Route";
 import View from "sap/ui/core/mvc/View";
 import ODataListBinding from "sap/ui/model/odata/v2/ODataListBinding";
@@ -29,7 +26,6 @@ export default class ViewEmployees extends BaseController {
     }
 
     private onObjectMatched (event: Route$PatternMatchedEvent): void {
-
         const view = this.getView() as View;
         const $this = this;
 
@@ -90,7 +86,6 @@ export default class ViewEmployees extends BaseController {
         const array = results as any;
         const formModel = this.getModel("form") as JSONModel;
         formModel.setData(array.results);
-        // console.log(formModel.getData());
     }
 
     public onNavToDetails(event: Event){

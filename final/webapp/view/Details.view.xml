@@ -84,10 +84,8 @@
                         <uxap:subSections>
                             <uxap:ObjectPageSubSection>
                                 <uxap:blocks>
-                                    
                                     <core:Fragment fragmentName="com.logali.final.fragment.DetailsContent"
                                                    type="XML"/>
-
                                 </uxap:blocks>
                             </uxap:ObjectPageSubSection>
                         </uxap:subSections>
@@ -113,7 +111,5 @@
         </Page>
 
     </NavContainer>
-
-    
 
 </mvc:View>

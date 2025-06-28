@@ -12,14 +12,8 @@
                             design="Horizontal">
                 <content>
                     <VBox> 
-
-                        <!-- <HBox justifyContent="SpaceBetween" alignItems="Center">
-                            <Text id="headerText" text="Anexos (0)" />
-                            <Button text="Cargar" press="onUploadPress" type="Transparent" />
-                        </HBox> -->
-
                         <upload:UploadSet id="uploadsetview"
-                                        uploadUrl="/sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments"
+                                        uploadUrl="/comlogalifinal/sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments"
                                         beforeUploadStarts="onBeforeUpload"
                                         uploadCompleted="onUploadCompleted"
                                         afterItemRemoved="onAfterItemDelete">

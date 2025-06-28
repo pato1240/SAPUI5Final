@@ -6,11 +6,6 @@
     <Shell id="shell">
 
         <App id="app">
-
-            <!-- <pages>
-                <mvc:XMLView viewName="com.logali.final.view.Container"
-                             type="XML"/>
-            </pages> -->
         
         </App>
 

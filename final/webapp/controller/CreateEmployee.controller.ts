@@ -1,27 +1,20 @@
 import MessageBox from "sap/m/MessageBox";
 import BaseController from "./BaseController";
-import WizardStep, { WizardStep$ActivateEvent, WizardStep$CompleteEvent } from "sap/m/WizardStep";
-import Wizard, { Wizard$CompleteEvent } from "sap/m/Wizard";
 import JSONModel from "sap/ui/model/json/JSONModel";
 import Button, { Button$PressEvent } from "sap/m/Button";
-import Input, { Input$LiveChangeEvent } from "sap/m/Input";
-import Fragment from "sap/ui/core/Fragment";
 import DatePicker from "sap/m/DatePicker";
-import Context from "sap/ui/model/Context";
-import { ValueState } from "sap/ui/core/library";
 import NavContainer from "sap/m/NavContainer";
 import Page from "sap/m/Page";
-import View from "sap/ui/core/mvc/View";
 import Utils from "../utils/Utils";
-import Filter from "sap/ui/model/Filter";
-import FilterOperator from "sap/ui/model/FilterOperator";
 import Decimal from "sap/ui/model/odata/type/Decimal";
 import UploadSet, { UploadSet$AfterItemAddedEvent, UploadSet$AfterItemRemovedEvent, UploadSet$UploadCompletedEvent } from "sap/m/upload/UploadSet";
 import UploadSetItem from "sap/m/upload/UploadSetItem";
 import ODataModel from "sap/ui/model/odata/v2/ODataModel";
 import Item from "sap/ui/core/Item";
-import Title from "sap/m/Title";
 import Text from "sap/m/Text";
+import Wizard from "sap/m/Wizard";
+import WizardStep from "sap/m/WizardStep";
+import Input from "sap/m/Input";
 
 
 /**
@@ -177,8 +170,8 @@ export default class CreateEmployee extends BaseController {
             //Correcto
                 formModel.setProperty("/DniValueState", "None");
                 return true;
-                }
             }
+        }
     }
 
     public onWizardCompleted(): void {
@@ -251,7 +244,6 @@ export default class CreateEmployee extends BaseController {
         const step1 = this.byId("EmployeeTypeStep1") as WizardStep
         const navContainer = this.byId("wizzardNavContainer") as NavContainer;
         const contentPage = this.byId("wizzardContentPage") as Page;
-        const router = this.getRouter();
 
         const formModel = this.getModel("form") as JSONModel;
         const formData = formModel.getData() as any;
@@ -264,7 +256,6 @@ export default class CreateEmployee extends BaseController {
         };
 
         const results = await utils.read(new JSONModel(objectRead)) as any;
-        // console.log(results);
         const lastId = results.results[results.results.length - 1].EmployeeId;
         const newId = (Number(lastId) + 1).toString(); 
 
@@ -277,7 +268,6 @@ export default class CreateEmployee extends BaseController {
             url: '/Users',
             data: {
                 EmployeeId: newId,
-                // EmployeeId: "0001",
                 SapId: sapId,
                 Type: formData.Type,
                 FirstName: formData.Name,
@@ -293,11 +283,7 @@ export default class CreateEmployee extends BaseController {
                     }       
                 ]    
             }
-            // filters: [
-            //     new Filter ("SapId", FilterOperator.EQ, sapId),
-            // ]
         }
-        console.log(objectCreate);
         uploadSetCreate.removeAllItems();
         await utils.crud('create', new JSONModel(objectCreate));
         this.onUploadFiles(sapId, newId);
@@ -329,37 +315,35 @@ export default class CreateEmployee extends BaseController {
         oHeaderText?.setText(resourceBundle.getText("attachmentTitle", [aItems.length]));
     }
 
-
     public onUploadFiles(sapId: string, employeeId: string) {
         let oUpload = this.getView()?.byId("uploadset") as UploadSet,
             oModel = this.getView()?.getModel("zemployees") as ODataModel,
             sToken = oModel.getSecurityToken(),
             aItems = oUpload.getItems();
 
-            console.log(aItems);
-
-            aItems.forEach((oItem: UploadSetItem)=>{
-                let sSapId = sapId, 
-                    sEmployeeId = employeeId,
-                    sDocName = oItem.getFileName(),
-                    sSlug = `${sSapId};${sEmployeeId};${sDocName}`;
-                
-                    let addHeaderSlug = new Item({
-                        key: 'slug',
-                        text: sSlug
-                    });
-                    let addHeaderToken = new Item({
-                        key: 'x-csrf-token',
-                        text: sToken
-                    });
-
-                    oItem.addHeaderField(addHeaderSlug);
-                    oItem.addHeaderField(addHeaderToken);
-
-                    oItem.setUploadState("Ready");
-                    oUpload.setUploadUrl("/sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments");
-                    oUpload.uploadItem(oItem);
+        aItems.forEach((oItem: UploadSetItem)=>{
+            let sSapId = sapId, 
+                sEmployeeId = employeeId,
+                sDocName = oItem.getFileName(),
+                sSlug = `${sSapId};${sEmployeeId};${sDocName}`;
+            
+            let addHeaderSlug = new Item({
+                key: 'slug',
+                text: sSlug
             });
+            let addHeaderToken = new Item({
+                key: 'x-csrf-token',
+                text: sToken
+            });
+
+            oItem.addHeaderField(addHeaderSlug);
+            oItem.addHeaderField(addHeaderToken);
+
+            oItem.setUploadState("Ready");
+            //////////////////////////////////
+            oUpload.setUploadUrl("/comlogalifinal/sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments");
+            oUpload.uploadItem(oItem);
+        });
     }
 
 }
