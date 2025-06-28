@@ -16,7 +16,7 @@
                        expanded="true">
 
                     <f:GridContainer class="sapUiSmallMargin" 
-                                     items="{tilesCollection>/TileCollectionEmpleados}">
+                                     items="{tiles>/TileCollectionEmpleados}">
 
                         <f:layout>
                             <f:GridContainerSettings rowSize="5rem" columnSize="5rem" gap="1rem" />
@@ -27,8 +27,8 @@
                         </f:layoutS>
 
                         <f:items>
-                            <GenericTile header="{tilesCollection>Title}" 
-                                         headerImage="{tilesCollection>Icon}"
+                            <GenericTile header="{tiles>Title}" 
+                                         headerImage="{tiles>Icon}"
                                          press="onPressTile">
                             	<layoutData>
 				                    <f:GridContainerItemLayoutData rows="2" columns="2" />
@@ -42,7 +42,7 @@
                 <Panel headerText="{i18n>ordersHeader}" class="sapUiMediumMargin" width="auto" expandable="true" expanded="true">
 
                     <f:GridContainer class="sapUiSmallMargin" 
-                                     items="{tilesCollection>/TileCollectionPedidos}">
+                                     items="{tiles>/TileCollectionPedidos}">
 
                         <f:layout>
                             <f:GridContainerSettings rowSize="5rem" columnSize="5rem" gap="1rem" />
@@ -53,8 +53,8 @@
                         </f:layoutS>
 
                         <f:items>
-                            <GenericTile header="{tilesCollection>Title}"
-                                         headerImage="{tilesCollection>Icon}"
+                            <GenericTile header="{tiles>Title}"
+                                         headerImage="{tiles>Icon}"
                                          press="handleUrlPress">
                             	<layoutData>
 				                    <f:GridContainerItemLayoutData rows="2" columns="2" />

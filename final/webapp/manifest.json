@@ -16,10 +16,6 @@
       "toolsId": "c159797e-d2ea-446c-80b3-699a3e418f30"
     },
     "dataSources": {
-      "tiles": {
-        "uri": "model/Tiles.json",
-        "type": "JSON"
-      },
       "mainService": {
         "uri": "/sap/opu/odata/sap/ZEMPLOYEES_SRV/",
         "type": "OData",

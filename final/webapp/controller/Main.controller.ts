@@ -14,7 +14,7 @@ export default class Main extends BaseController {
     }
 
     public onPressTile(event: GenericTile$PressEvent): void {
-        const bindingContext = event.getSource().getBindingContext("tilesCollection") as Context;
+        const bindingContext = event.getSource().getBindingContext("tiles") as Context;
         const viewRoute = bindingContext.getProperty("View");
         const router = this.getRouter();
         router.navTo(viewRoute);
