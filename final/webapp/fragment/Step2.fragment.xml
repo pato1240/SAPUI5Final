@@ -57,8 +57,9 @@
                         min="{form>/SliderMin}"
                         max="{form>/SliderMax}"
                         value="{form>/SliderValue}"
+                        width="100%"
                         showAdvancedTooltip="true"
-                        class="sapUiMediumMarginBottom"/> 
+                        class="sapUiMediumMarginBottom customSlider"/> 
 
                 <Label text="{i18n>joiningDate}"
                        required="true"/>

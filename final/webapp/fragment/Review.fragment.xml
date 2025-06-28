@@ -79,7 +79,7 @@
                                   uploadButtonInvisible="true">
                     <upload:toolbar>
                                 <OverflowToolbar>
-                                    <Text  id="uploadheader"
+                                    <Text  id="uploadheaderreview"
                                            width="90%"/>
                                 </OverflowToolbar>
                     </upload:toolbar>

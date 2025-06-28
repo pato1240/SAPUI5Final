@@ -26,6 +26,7 @@ import Item from "sap/ui/core/Item";
 import ListBinding from "sap/ui/model/ListBinding";
 import Title from "sap/m/Title";
 import ObjectPageHeader from "sap/uxap/ObjectPageHeader";
+import { ObjectBindingInfo } from "sap/ui/base/ManagedObject";
 
 /**
  * @namespace com.logali.final.controller
@@ -152,12 +153,14 @@ export default class Details extends BaseController {
     public onUploadCompleted(event: UploadSet$UploadCompletedEvent) : void {
         const uploadSet = event.getSource();
         uploadSet.getBinding("items")?.refresh();
-        this.updateHeader();
+        // this.updateHeader();
     }
 
     private onSearchFiles(id: string):void {
         const utils = new Utils(this);
         const oUploadSet = this.byId("uploadsetview") as UploadSet;
+        let aItems: any;
+        let filesNumber: number;
 
         oUploadSet?.bindAggregation("items", {
             path: 'zemployees>/Attachments',
@@ -171,32 +174,21 @@ export default class Details extends BaseController {
                 visibleEdit: false,
                 url: "/",
                 openPressed: this.onOpenPress.bind(this)
-            })
+            }),
+            events: {
+                dataReceived: () => {
+                    aItems = oUploadSet.getItems();
+                    filesNumber = aItems.length;
+                    this.updateHeader(filesNumber);
+                }
+            }
         });
-       this.updateHeader();
     }
 
-    public async updateHeader(): Promise<void> {
+    public async updateHeader(filesnumber: number): Promise<void> {
         const resourceBundle = this.getResourceBundle();
-        const utils = new Utils(this);
-        const sapId = utils.getSapId();
-        const router = this.getRouter(); 
-        const hash = (router.getHashChanger() as any).hash;
-        const match = hash.match(/\((\d+)\)/);
-        const employeeId = match[1]; 
-            
-        const object = {
-            url: "/Attachments",
-            filters: [
-                new Filter ("SapId", FilterOperator.EQ, sapId),
-                new Filter ("EmployeeId", FilterOperator.EQ, employeeId)
-            ]
-        };
-        const results = await utils.read(new JSONModel(object));
-
-        const aFiles = (results as any).results;
         const oHeaderText = this.byId("headerText") as Title;
-        const title = resourceBundle.getText("attachmentTitle", [aFiles.length]) as string;
+        const title = resourceBundle.getText("attachmentTitle", [filesnumber]);
         oHeaderText?.setText(title);
     } 
     
@@ -220,7 +212,7 @@ export default class Details extends BaseController {
         const utils = new Utils(this);
         await utils.crud('delete', new JSONModel(object));
         item.getBinding("items")?.refresh();
-        this.updateHeader();
+        // this.updateHeader();
     }
 
     private onSalaryBinding(id: string): void {

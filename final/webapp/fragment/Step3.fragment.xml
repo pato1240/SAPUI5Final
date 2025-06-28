@@ -16,7 +16,15 @@
                    growing="true"
                    width="100%"/>
         <upload:UploadSet id="uploadset"
-                          afterItemAdded="onAfterItemAdded">
+                          afterItemAdded="onAfterItemAdded"
+                          afterItemRemoved="onAfterItemRemoved">
+            <upload:toolbar>
+                <OverflowToolbar>
+                    <Text  id="uploadheadercreate"
+                           text="{i18n>attachmentTitleInitial}"
+                            width="90%"/>
+                </OverflowToolbar>
+            </upload:toolbar>
         </upload:UploadSet>
     </VBox> 
 

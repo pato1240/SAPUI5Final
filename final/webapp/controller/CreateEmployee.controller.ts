@@ -16,7 +16,7 @@ import Utils from "../utils/Utils";
 import Filter from "sap/ui/model/Filter";
 import FilterOperator from "sap/ui/model/FilterOperator";
 import Decimal from "sap/ui/model/odata/type/Decimal";
-import UploadSet, { UploadSet$AfterItemAddedEvent, UploadSet$UploadCompletedEvent } from "sap/m/upload/UploadSet";
+import UploadSet, { UploadSet$AfterItemAddedEvent, UploadSet$AfterItemRemovedEvent, UploadSet$UploadCompletedEvent } from "sap/m/upload/UploadSet";
 import UploadSetItem from "sap/m/upload/UploadSetItem";
 import ODataModel from "sap/ui/model/odata/v2/ODataModel";
 import Item from "sap/ui/core/Item";
@@ -37,6 +37,8 @@ export default class CreateEmployee extends BaseController {
     }
 
     public handleWizardCancel(): void {
+        const uploadSetCreate = this.byId("uploadset") as UploadSet;
+        const oHeaderText = this.byId("uploadheadercreate") as Text;
         const wizard = this.byId("createEmployeeWizard") as Wizard;
         const step1 = this.byId("EmployeeTypeStep1") as WizardStep
         const navContainer = this.byId("wizzardNavContainer") as NavContainer;
@@ -52,6 +54,8 @@ export default class CreateEmployee extends BaseController {
                 if (sAction === MessageBox.Action.YES) {
                     wizard.discardProgress(wizard.getSteps()[0], true);
                     wizard.invalidateStep(step1);
+                    uploadSetCreate.removeAllItems();
+                    oHeaderText?.setText(resourceBundle.getText("attachmentTitleInitial"));
                     navContainer.to(contentPage);
                     formModel.setData([]);
                     router.navTo("RouteMain");
@@ -199,7 +203,7 @@ export default class CreateEmployee extends BaseController {
         });
 
         const resourceBundle = this.getResourceBundle();
-        const oHeaderText = this.byId("uploadheader") as Text;
+        const oHeaderText = this.byId("uploadheaderreview") as Text;
 
         if(aItems.length !== 0){
             oUploadSetReview.setVisible(true);
@@ -240,6 +244,9 @@ export default class CreateEmployee extends BaseController {
     }
 
     public async handleWizardSave(): Promise<void> {
+        const uploadSetCreate = this.byId("uploadset") as UploadSet;
+        const oHeaderText = this.byId("uploadheadercreate") as Text;
+        const resourceBundle = this.getResourceBundle();
         const wizard = this.byId("createEmployeeWizard") as Wizard;
         const step1 = this.byId("EmployeeTypeStep1") as WizardStep
         const navContainer = this.byId("wizzardNavContainer") as NavContainer;
@@ -291,19 +298,37 @@ export default class CreateEmployee extends BaseController {
             // ]
         }
         console.log(objectCreate);
+        uploadSetCreate.removeAllItems();
         await utils.crud('create', new JSONModel(objectCreate));
         this.onUploadFiles(sapId, newId);
 
         wizard.discardProgress(wizard.getSteps()[0], true);
         wizard.invalidateStep(step1);
+        oHeaderText?.setText(resourceBundle.getText("attachmentTitleInitial"));
         navContainer.to(contentPage);
         formModel.setData([]);
     }
 
     public onAfterItemAdded (event: UploadSet$AfterItemAddedEvent): void {
         const item = event.getParameter("item") as UploadSetItem;
+        const resourceBundle = this.getResourceBundle();
+        const uploadSetCreate = this.byId("uploadset") as UploadSet;
+        const aItems = uploadSetCreate.getItems();
+        const oHeaderText = this.byId("uploadheadercreate") as Text;
         item.setVisibleEdit(false);
+        oHeaderText?.setText(resourceBundle.getText("attachmentTitle", [aItems.length + 1]));
     }
+
+    public onAfterItemRemoved (event: UploadSet$AfterItemRemovedEvent): void {
+        const item = event.getParameter("item") as UploadSetItem;
+        const resourceBundle = this.getResourceBundle();
+        const uploadSetCreate = this.byId("uploadset") as UploadSet;
+        const aItems = uploadSetCreate.getItems();
+        const oHeaderText = this.byId("uploadheadercreate") as Text;
+        item.setVisibleEdit(false);
+        oHeaderText?.setText(resourceBundle.getText("attachmentTitle", [aItems.length]));
+    }
+
 
     public onUploadFiles(sapId: string, employeeId: string) {
         let oUpload = this.getView()?.byId("uploadset") as UploadSet,
