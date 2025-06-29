@@ -22,7 +22,7 @@
                 <OverflowToolbar>
                     <Text  id="uploadheadercreate"
                            text="{i18n>attachmentTitleInitial}"
-                            width="90%"/>
+                           width="90%"/>
                 </OverflowToolbar>
             </upload:toolbar>
         </upload:UploadSet>

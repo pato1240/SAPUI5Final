@@ -7,9 +7,6 @@
       "request": "launch",
       "cwd": "${workspaceFolder}/final",
       "runtimeExecutable": "npx",
-      "windows": {
-        "runtimeExecutable": "npx.cmd"
-      },
       "runtimeArgs": [
         "fiori",
         "run"
@@ -33,9 +30,6 @@
       "request": "launch",
       "cwd": "${workspaceFolder}/final",
       "runtimeExecutable": "npx",
-      "windows": {
-        "runtimeExecutable": "npx.cmd"
-      },
       "runtimeArgs": [
         "fiori",
         "run"

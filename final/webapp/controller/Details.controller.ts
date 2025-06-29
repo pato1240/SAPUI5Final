@@ -182,7 +182,7 @@ export default class Details extends BaseController {
         const item = event.getParameter("item") as UploadSetItem;
         const bindingContext = item?.getBindingContext("zemployees") as Context;
         const sPath = bindingContext.getPath();
-        let url = "/comlogalifinal/sap/opu/odata/sap/ZEMPLOYEES_SRV" + sPath + "/$value";
+        let url = "/comlogalifinal/sap/opu/odata/sap/ZEMPLOYEES_SRV"+sPath+"/$value";
         item.setUrl(url);
     }
 

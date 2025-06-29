@@ -22,39 +22,9 @@ import Input from "sap/m/Input";
  */
 export default class CreateEmployee extends BaseController {
     /*eslint-disable @typescript-eslint/no-empty-function*/
-
-    private aItems = [] as any;
           
     public onInit(): void {
 
-    }
-
-    public handleWizardCancel(): void {
-        const uploadSetCreate = this.byId("uploadset") as UploadSet;
-        const oHeaderText = this.byId("uploadheadercreate") as Text;
-        const wizard = this.byId("createEmployeeWizard") as Wizard;
-        const step1 = this.byId("EmployeeTypeStep1") as WizardStep
-        const navContainer = this.byId("wizzardNavContainer") as NavContainer;
-        const contentPage = this.byId("wizzardContentPage") as Page;
-        const formModel = this.getModel("form") as JSONModel;
-        const resourceBundle = this.getResourceBundle();
-        const router = this.getRouter();
-
-        MessageBox.warning(resourceBundle.getText("cancelConfirmation") || 'No text defined', {
-            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-            emphasizedAction: MessageBox.Action.YES,
-            onClose: function(sAction : string) {
-                if (sAction === MessageBox.Action.YES) {
-                    wizard.discardProgress(wizard.getSteps()[0], true);
-                    wizard.invalidateStep(step1);
-                    uploadSetCreate.removeAllItems();
-                    oHeaderText?.setText(resourceBundle.getText("attachmentTitleInitial"));
-                    navContainer.to(contentPage);
-                    formModel.setData([]);
-                    router.navTo("RouteMain");
-                }
-            }
-        });
     }
 
     public onGoToStep2(event: Button$PressEvent): void {
@@ -174,38 +144,6 @@ export default class CreateEmployee extends BaseController {
         }
     }
 
-    public onWizardCompleted(): void {
-        const navContainer = this.byId("wizzardNavContainer") as NavContainer;
-        navContainer.to(this.byId("wizardReviewPage") as Page);
-        this.onDisplayFiles();
-    }
-
-    private onDisplayFiles():void {
-        const uploadSetCreate = this.byId("uploadset") as UploadSet;
-        const aItems = uploadSetCreate.getItems() as any;
-        const oUploadSetReview = this.byId("uploadsetreview") as UploadSet;
-        oUploadSetReview.removeAllItems();
-
-        aItems.forEach((oItem: UploadSetItem)=>{
-            const item = new UploadSetItem({
-            visibleEdit: false,
-            visibleRemove: false,
-            fileName: oItem.getFileName()
-            });
-            oUploadSetReview.addItem(item);
-        });
-
-        const resourceBundle = this.getResourceBundle();
-        const oHeaderText = this.byId("uploadheaderreview") as Text;
-
-        if(aItems.length !== 0){
-            oUploadSetReview.setVisible(true);
-            oHeaderText?.setText(resourceBundle.getText("uploadTitle", [aItems.length]));
-        } else {
-            oUploadSetReview.setVisible(false);
-        }
-    }
-
     public onEditStepOne(): void {
         this.navigationToStep(0);
     }
@@ -284,7 +222,6 @@ export default class CreateEmployee extends BaseController {
                 ]    
             }
         }
-        uploadSetCreate.removeAllItems();
         await utils.crud('create', new JSONModel(objectCreate));
         this.onUploadFiles(sapId, newId);
 
@@ -293,6 +230,47 @@ export default class CreateEmployee extends BaseController {
         oHeaderText?.setText(resourceBundle.getText("attachmentTitleInitial"));
         navContainer.to(contentPage);
         formModel.setData([]);
+
+        uploadSetCreate.removeAllItems();
+        uploadSetCreate.bindAggregation("items",{
+            path: 'form>/Attachments',
+            template: new UploadSetItem({
+            })
+        });
+    }
+
+    public handleWizardCancel(): void {
+        const uploadSetCreate = this.byId("uploadset") as UploadSet;
+        const oHeaderText = this.byId("uploadheadercreate") as Text;
+        const wizard = this.byId("createEmployeeWizard") as Wizard;
+        const step1 = this.byId("EmployeeTypeStep1") as WizardStep
+        const navContainer = this.byId("wizzardNavContainer") as NavContainer;
+        const contentPage = this.byId("wizzardContentPage") as Page;
+        const formModel = this.getModel("form") as JSONModel;
+        const resourceBundle = this.getResourceBundle();
+        const router = this.getRouter();
+
+        MessageBox.warning(resourceBundle.getText("cancelConfirmation") || 'No text defined', {
+            actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+            emphasizedAction: MessageBox.Action.YES,
+            onClose: function(sAction : string) {
+                if (sAction === MessageBox.Action.YES) {
+                    wizard.discardProgress(wizard.getSteps()[0], true);
+                    wizard.invalidateStep(step1);
+                    uploadSetCreate.removeAllItems();
+                    oHeaderText?.setText(resourceBundle.getText("attachmentTitleInitial"));
+                    navContainer.to(contentPage);
+                    formModel.setData([]);
+                    router.navTo("RouteMain");
+                }
+            }
+        });
+    }
+
+    public onWizardCompleted(): void {
+        const navContainer = this.byId("wizzardNavContainer") as NavContainer;
+        navContainer.to(this.byId("wizardReviewPage") as Page);
+        this.onDisplayFiles();
     }
 
     public onAfterItemAdded (event: UploadSet$AfterItemAddedEvent): void {
@@ -301,6 +279,7 @@ export default class CreateEmployee extends BaseController {
         const uploadSetCreate = this.byId("uploadset") as UploadSet;
         const aItems = uploadSetCreate.getItems();
         const oHeaderText = this.byId("uploadheadercreate") as Text;
+        uploadSetCreate.unbindAggregation("items", true);
         item.setVisibleEdit(false);
         oHeaderText?.setText(resourceBundle.getText("attachmentTitle", [aItems.length + 1]));
     }
@@ -313,6 +292,32 @@ export default class CreateEmployee extends BaseController {
         const oHeaderText = this.byId("uploadheadercreate") as Text;
         item.setVisibleEdit(false);
         oHeaderText?.setText(resourceBundle.getText("attachmentTitle", [aItems.length]));
+    }
+
+    private onDisplayFiles():void {
+        const uploadSetCreate = this.byId("uploadset") as UploadSet;
+        const aItems = uploadSetCreate.getItems() as any;
+        const oUploadSetReview = this.byId("uploadsetreview") as UploadSet;
+        oUploadSetReview.removeAllItems();
+
+        aItems.forEach((oItem: UploadSetItem)=>{
+            const item = new UploadSetItem({
+            visibleEdit: false,
+            visibleRemove: false,
+            fileName: oItem.getFileName()
+            });
+            oUploadSetReview.addItem(item);
+        });
+
+        const resourceBundle = this.getResourceBundle();
+        const oHeaderText = this.byId("uploadheaderreview") as Text;
+
+        if(aItems.length !== 0){
+            oUploadSetReview.setVisible(true);
+            oHeaderText?.setText(resourceBundle.getText("uploadTitle", [aItems.length]));
+        } else {
+            oUploadSetReview.setVisible(false);
+        }
     }
 
     public onUploadFiles(sapId: string, employeeId: string) {
@@ -340,7 +345,6 @@ export default class CreateEmployee extends BaseController {
             oItem.addHeaderField(addHeaderToken);
 
             oItem.setUploadState("Ready");
-            //////////////////////////////////
             oUpload.setUploadUrl("/comlogalifinal/sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments");
             oUpload.uploadItem(oItem);
         });
